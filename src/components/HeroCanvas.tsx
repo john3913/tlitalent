@@ -1,16 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-interface Orb {
+interface Particle {
   x: number; y: number;
-  r: number;
-  ox: number; oy: number;
-  rx: number; ry: number;
-  phaseX: number; phaseY: number;
-  speedX: number; speedY: number;
-  r1: number; g1: number; b1: number;
-  r2: number; g2: number; b2: number;
-  opacity: number;
+  px: number; py: number;
+  age: number; maxAge: number;
+  speed: number;
+  maroon: boolean;
+  lw: number;
 }
 
 export default function HeroCanvas() {
@@ -22,132 +19,164 @@ export default function HeroCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const c = ctx;
+    const el = canvas;
 
     let W = 0, H = 0;
+    const N = 680;
+    let particles: Particle[] = [];
 
     function resize() {
-      W = canvas!.offsetWidth;
-      H = canvas!.offsetHeight;
-      canvas!.width = W * devicePixelRatio;
-      canvas!.height = H * devicePixelRatio;
+      W = el.offsetWidth;
+      H = el.offsetHeight;
+      el.width = W * devicePixelRatio;
+      el.height = H * devicePixelRatio;
       c.scale(devicePixelRatio, devicePixelRatio);
     }
     resize();
 
-    /* Three slow orbs: deep maroon, dark crimson, near-black violet */
-    const orbs: Orb[] = [
-      {
-        ox: W * 0.3, oy: H * 0.45,
-        rx: W * 0.18, ry: H * 0.18,
-        phaseX: 0, phaseY: 1.1,
-        speedX: 0.00028, speedY: 0.00021,
-        r: W * 0.52,
-        x: 0, y: 0,
-        r1: 144, g1: 0, b1: 32,
-        r2: 90,  g2: 0, b2: 20,
-        opacity: 0.55,
-      },
-      {
-        ox: W * 0.72, oy: H * 0.35,
-        rx: W * 0.14, ry: H * 0.14,
-        phaseX: 2.4, phaseY: 0.6,
-        speedX: 0.00022, speedY: 0.00032,
-        r: W * 0.44,
-        x: 0, y: 0,
-        r1: 60,  g1: 10, b1: 80,
-        r2: 30,  g2: 0,  b2: 50,
-        opacity: 0.35,
-      },
-      {
-        ox: W * 0.55, oy: H * 0.65,
-        rx: W * 0.1, ry: H * 0.1,
-        phaseX: 4.8, phaseY: 3.2,
-        speedX: 0.00018, speedY: 0.00024,
-        r: W * 0.36,
-        x: 0, y: 0,
-        r1: 100, g1: 5, b1: 18,
-        r2: 50,  g2: 0, b2: 12,
-        opacity: 0.3,
-      },
-    ];
+    function spawn(stagger?: boolean): Particle {
+      const maxAge = 90 + Math.random() * 160;
+      return {
+        x: Math.random() * W, y: Math.random() * H,
+        px: 0, py: 0,
+        age: stagger ? Math.random() * maxAge : 0,
+        maxAge,
+        speed: 0.65 + Math.random() * 0.85,
+        maroon: Math.random() < 0.17,
+        lw: 0.5 + Math.random() * 0.6,
+      };
+    }
 
-    let raf: number;
-    let t = 0;
+    particles = Array.from({ length: N }, () => spawn(true));
 
-    function drawDotGrid() {
-      const spacing = 36;
-      const dotR = 0.7;
-      c.fillStyle = "rgba(255,255,255,0.055)";
-      for (let x = spacing / 2; x < W; x += spacing) {
-        for (let y = spacing / 2; y < H; y += spacing) {
-          c.beginPath();
-          c.arc(x, y, dotR, 0, Math.PI * 2);
-          c.fill();
+    /* Mathematical vector field:
+       angle = sin(fx·x + t) · cos(fy·y − t) · τ + sin((x+y)·k + t)·c
+       Parameters drift slowly, creating morphing phase-portrait topology */
+    function fieldAngle(x: number, y: number, t: number): number {
+      const s = 1.55 / Math.max(W, H);
+      const ts = t * 0.000155;
+      const fx = 2.1 + Math.sin(ts * 0.27) * 0.55;
+      const fy = 1.75 + Math.cos(ts * 0.21) * 0.45;
+      return (
+        Math.sin(x * s * fx + ts * 0.52) *
+        Math.cos(y * s * fy - ts * 0.36) *
+        Math.PI * 2.35 +
+        Math.sin((x * 0.6 + y * 0.8) * s * 1.25 + ts * 0.88) * 0.78
+      );
+    }
+
+    /* Faint coordinate grid — signals mathematical space */
+    function drawGrid() {
+      const step = 70;
+      c.lineWidth = 0.4;
+      c.strokeStyle = "rgba(255,255,255,0.022)";
+      for (let x = step / 2; x < W; x += step) {
+        c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke();
+      }
+      for (let y = step / 2; y < H; y += step) {
+        c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
+      }
+      /* Intersection dots */
+      c.fillStyle = "rgba(255,255,255,0.048)";
+      for (let x = step / 2; x < W; x += step) {
+        for (let y = step / 2; y < H; y += step) {
+          c.beginPath(); c.arc(x, y, 0.75, 0, Math.PI * 2); c.fill();
         }
       }
     }
 
-    function drawOrb(orb: Orb) {
-      const x = orb.ox + Math.sin(orb.phaseX + t * orb.speedX * 1000) * orb.rx;
-      const y = orb.oy + Math.cos(orb.phaseY + t * orb.speedY * 1000) * orb.ry;
-      orb.x = x; orb.y = y;
-
-      const g = c.createRadialGradient(x, y, 0, x, y, orb.r);
-      g.addColorStop(0,   `rgba(${orb.r1},${orb.g1},${orb.b1},${orb.opacity})`);
-      g.addColorStop(0.4, `rgba(${orb.r1},${orb.g1},${orb.b1},${orb.opacity * 0.5})`);
-      g.addColorStop(1,   `rgba(${orb.r2},${orb.g2},${orb.b2},0)`);
+    /* Periodic faint Lissajous ghost — unmistakably mathematical */
+    let lissT = 0;
+    function drawLissajous() {
+      const cx = W * 0.62, cy = H * 0.42;
+      const rx = Math.min(W, H) * 0.22;
+      const ry = Math.min(W, H) * 0.15;
+      const A = 3, B = 2;
+      const steps = 400;
+      c.save();
+      c.globalAlpha = 0.025;
+      c.strokeStyle = "#c0003a";
+      c.lineWidth = 0.8;
       c.beginPath();
-      c.arc(x, y, orb.r, 0, Math.PI * 2);
-      c.fillStyle = g;
-      c.fill();
+      for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * Math.PI * 2;
+        const x = cx + rx * Math.sin(A * t + lissT * 0.0004);
+        const y = cy + ry * Math.sin(B * t);
+        i === 0 ? c.moveTo(x, y) : c.lineTo(x, y);
+      }
+      c.stroke();
+      c.restore();
     }
 
-    /* Thin horizontal scan line that drifts very slowly */
-    function drawScanline() {
-      const y = H * 0.5 + Math.sin(t * 0.00015) * H * 0.22;
-      const grad = c.createLinearGradient(0, y - 1, 0, y + 1);
-      grad.addColorStop(0, "rgba(255,255,255,0)");
-      grad.addColorStop(0.5, "rgba(255,255,255,0.03)");
-      grad.addColorStop(1, "rgba(255,255,255,0)");
-      c.fillStyle = grad;
-      c.fillRect(0, y - 80, W, 160);
-    }
+    let raf: number;
 
-    function draw(ts: number) {
-      t = ts;
-      c.clearRect(0, 0, W, H);
+    function draw(t: number) {
+      lissT = t;
 
-      /* Background */
-      c.fillStyle = "#0e0e10";
+      /* Trail fade — slower = longer trails */
+      c.fillStyle = "rgba(14,14,16,0.15)";
       c.fillRect(0, 0, W, H);
 
-      drawDotGrid();
-      orbs.forEach(drawOrb);
-      drawScanline();
+      /* Grid persists faintly through the fade each frame */
+      drawGrid();
 
-      /* Top vignette fade */
-      const topVig = c.createLinearGradient(0, 0, 0, H * 0.5);
-      topVig.addColorStop(0, "rgba(14,14,16,0.7)");
-      topVig.addColorStop(1, "rgba(14,14,16,0)");
-      c.fillStyle = topVig;
+      /* Lissajous ghost */
+      drawLissajous();
+
+      /* Particles */
+      particles.forEach((p) => {
+        p.px = p.x; p.py = p.y;
+        const a = fieldAngle(p.x, p.y, t);
+        p.x += Math.cos(a) * p.speed;
+        p.y += Math.sin(a) * p.speed;
+        p.age++;
+
+        const life = p.age / p.maxAge;
+        const alpha =
+          life < 0.08 ? (life / 0.08) * 0.2
+          : life > 0.86 ? ((1 - life) / 0.14) * 0.2
+          : 0.2;
+
+        c.lineWidth = p.lw;
+        c.strokeStyle = p.maroon
+          ? `rgba(192,0,58,${(alpha * 1.3).toFixed(3)})`
+          : `rgba(210,212,222,${(alpha * 0.72).toFixed(3)})`;
+        c.beginPath();
+        c.moveTo(p.px, p.py);
+        c.lineTo(p.x, p.y);
+        c.stroke();
+
+        if (
+          p.age >= p.maxAge ||
+          p.x < -5 || p.x > W + 5 ||
+          p.y < -5 || p.y > H + 5
+        ) {
+          Object.assign(p, spawn(false));
+        }
+      });
+
+      /* Radial edge vignette */
+      const vig = c.createRadialGradient(
+        W * 0.5, H * 0.42, 0,
+        W * 0.5, H * 0.42, Math.max(W, H) * 0.72
+      );
+      vig.addColorStop(0, "rgba(14,14,16,0)");
+      vig.addColorStop(1, "rgba(14,14,16,0.62)");
+      c.fillStyle = vig;
       c.fillRect(0, 0, W, H);
 
       raf = requestAnimationFrame(draw);
     }
 
+    /* Seed initial frame */
+    c.fillStyle = "#0e0e10";
+    c.fillRect(0, 0, W, H);
+    drawGrid();
+
     raf = requestAnimationFrame(draw);
 
-    const ro = new ResizeObserver(() => {
-      resize();
-      orbs[0].ox = W * 0.3;  orbs[0].oy = H * 0.45; orbs[0].r = W * 0.52;
-      orbs[0].rx = W * 0.18; orbs[0].ry = H * 0.18;
-      orbs[1].ox = W * 0.72; orbs[1].oy = H * 0.35; orbs[1].r = W * 0.44;
-      orbs[1].rx = W * 0.14; orbs[1].ry = H * 0.14;
-      orbs[2].ox = W * 0.55; orbs[2].oy = H * 0.65; orbs[2].r = W * 0.36;
-      orbs[2].rx = W * 0.1;  orbs[2].ry = H * 0.1;
-    });
-    ro.observe(canvas);
-
+    const ro = new ResizeObserver(resize);
+    ro.observe(el);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
   }, []);
 
