@@ -4,31 +4,51 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/opportunities", label: "Opportunities" },
-  { href: "/process",       label: "How It Works"  },
+  { href: "/process",       label: "Process"       },
   { href: "/resources",     label: "Resources"     },
 ];
 
 export default function Nav() {
   const path = usePathname();
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#222226] bg-[#0e0e10]/85 backdrop-blur-2xl backdrop-saturate-150">
-      <div className="max-w-[1360px] mx-auto px-8 lg:px-16 h-13 flex items-center justify-between" style={{ height: "52px" }}>
-        <Link href="/" className="text-[15px] font-medium text-white tracking-tight">
-          TLI Talent
+    <nav className="sticky top-0 z-50" style={{
+      borderBottom: "1px solid rgba(255,255,255,0.07)",
+      background: "rgba(17,17,20,0.88)",
+      backdropFilter: "blur(20px) saturate(180%)",
+      WebkitBackdropFilter: "blur(20px) saturate(180%)",
+    }}>
+      <div style={{
+        maxWidth: 1360, margin: "0 auto",
+        padding: "0 4rem", height: 52,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+      }}>
+        {/* Brand */}
+        <Link href="/" style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", textDecoration: "none" }}>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: "#ffffff", letterSpacing: "-0.01em" }}>
+            TLI Talent
+          </span>
+          <em style={{
+            fontSize: "13px", fontWeight: 400, fontStyle: "italic",
+            color: "#606068", letterSpacing: "0",
+          }}>
+            Development Program
+          </em>
         </Link>
-        <div className="flex items-center gap-7">
+
+        {/* Links */}
+        <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
           {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`text-[13px] transition-colors duration-150 ${
-                path === l.href ? "text-white" : "text-[#a1a1a6] hover:text-white"
-              }`}
-            >
+            <Link key={l.href} href={l.href} style={{
+              fontSize: "13px",
+              color: path === l.href ? "#ffffff" : "#707078",
+              textDecoration: "none",
+              transition: "color 0.15s",
+              letterSpacing: "0.01em",
+            }}>
               {l.label}
             </Link>
           ))}
-          <Link href="/apply" className="btn-primary !py-[7px] !px-[18px] text-[13px]">
+          <Link href="/apply" className="btn-primary" style={{ padding: "7px 18px", fontSize: "13px" }}>
             Apply
           </Link>
         </div>

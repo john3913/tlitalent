@@ -112,17 +112,8 @@ export default function ProgramMap() {
       <div className="max-w-[1360px] mx-auto px-8 lg:px-16 py-24">
 
         {/* Header */}
-        <div className="mb-14 max-w-xl">
+        <div className="mb-14">
           <p className="label mb-3">Program Intelligence</p>
-          <h2
-            className="text-[2.4rem] font-semibold tracking-[-0.03em] leading-tight"
-            style={{
-              background: "linear-gradient(135deg, #f5f5f7 0%, #888890 100%)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}
-          >
-            Four pathways into<br />the Bakken lab.
-          </h2>
         </div>
 
         {/* Two-column layout */}
