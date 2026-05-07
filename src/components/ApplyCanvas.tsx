@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-/* Pipeline nodes — damped sine wave spine */
 const NODES = [
   { rx: 0.520, ry: 0.50, n: "01", label: "Recommend" },
   { rx: 0.612, ry: 0.26, n: "02", label: "Apply"     },
@@ -13,8 +12,18 @@ const NODES = [
 
 const EDGES: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5]];
 
-/* Catmull-Rom → cubic bezier CPs */
+/*
+ * Lissajous figures: x = A·sin(a·t + δ), y = B·sin(b·t)
+ * δ evolves slowly over time — the figure continuously morphs.
+ */
+const FIGURES = [
+  { cx: 0.740, cy: 0.50, rx: 0.130, ry: 0.320, a: 3, b: 2, rate: 0.14, alpha: 0.058 },
+  { cx: 0.620, cy: 0.50, rx: 0.085, ry: 0.210, a: 5, b: 4, rate: 0.09, alpha: 0.040 },
+  { cx: 0.870, cy: 0.50, rx: 0.060, ry: 0.155, a: 2, b: 3, rate: 0.19, alpha: 0.048 },
+];
+
 type CP = { cp1x:number; cp1y:number; cp2x:number; cp2y:number };
+
 function catmullRomCPs(pts: {x:number;y:number}[], tension = 0.42): CP[] {
   return pts.slice(0, -1).map((_, i) => {
     const p0 = pts[Math.max(0, i-1)];
@@ -38,15 +47,7 @@ function evalBez(a:{x:number;y:number}, cp:CP, b:{x:number;y:number}, t:number) 
   };
 }
 
-/* Background constellation particle */
-interface Star { x:number; y:number; vx:number; vy:number; r:number; a:number; }
-
-/* Pipeline spark */
 interface Spark { ei:number; t:number; speed:number; r:number; }
-
-const SPARK_PER_EDGE = 7;
-const STAR_COUNT = 280;
-const CONN_DIST = 110;
 
 export default function ApplyCanvas() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -62,30 +63,15 @@ export default function ApplyCanvas() {
     let W = 0, H = 0;
     let nodes: { x:number; y:number; pingAge:number }[] = [];
     let cps: CP[] = [];
-    let stars: Star[] = [];
 
     const sparks: Spark[] = EDGES.flatMap((_, ei) =>
-      Array.from({ length: SPARK_PER_EDGE }, () => ({
+      Array.from({ length: 6 }, () => ({
         ei,
         t: Math.random(),
-        speed: 0.00065 + Math.random() * 0.00085,
+        speed: 0.00068 + Math.random() * 0.00088,
         r: 2.0 + Math.random() * 1.8,
       }))
     );
-
-    /* Spatial grid for O(n) constellation connections */
-    function buildGrid(cell: number) {
-      const cols = Math.ceil(W / cell);
-      const rows = Math.ceil(H / cell);
-      const grid: number[][] = Array.from({ length: cols * rows }, () => []);
-      stars.forEach((s, i) => {
-        const col = Math.floor(s.x / cell);
-        const row = Math.floor(s.y / cell);
-        if (col >= 0 && col < cols && row >= 0 && row < rows)
-          grid[row * cols + col].push(i);
-      });
-      return { grid, cols, rows };
-    }
 
     function resize() {
       W = el.offsetWidth; H = el.offsetHeight;
@@ -94,75 +80,81 @@ export default function ApplyCanvas() {
       c.scale(devicePixelRatio, devicePixelRatio);
       nodes = NODES.map(n => ({ x: n.rx * W, y: n.ry * H, pingAge: 0 }));
       cps = catmullRomCPs(nodes);
-      stars = Array.from({ length: STAR_COUNT }, () => ({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: (Math.random() - 0.5) * 0.12,
-        r: 0.6 + Math.random() * 0.8,
-        a: 0.18 + Math.random() * 0.38,
-      }));
     }
     resize();
 
     let raf = 0;
+    const t0 = performance.now();
 
     function draw() {
-      /* Fade trail — maroon-tinted dark wash */
-      c.fillStyle = "rgba(6,9,30,0.13)";
-      c.fillRect(0, 0, W, H);
+      const t = (performance.now() - t0) * 0.001;
+      c.clearRect(0, 0, W, H);
 
-      /* ── Move stars ─────────────────────────────────────────── */
-      for (const s of stars) {
-        s.x += s.vx; s.y += s.vy;
-        if (s.x < 0) s.x = W;
-        if (s.x > W) s.x = 0;
-        if (s.y < 0) s.y = H;
-        if (s.y > H) s.y = 0;
+      /* ── Fine coordinate grid ───────────────────────────────── */
+      const GRID = 44;
+      c.lineWidth = 0.5;
+
+      /* Major lines every 4 cells */
+      c.strokeStyle = "rgba(255,255,255,0.038)";
+      for (let x = GRID * 4; x < W; x += GRID * 4) {
+        c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke();
+      }
+      for (let y = GRID * 4; y < H; y += GRID * 4) {
+        c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
       }
 
-      /* ── Constellation connections ──────────────────────────── */
-      const { grid, cols } = buildGrid(CONN_DIST);
-      const rows = Math.ceil(H / CONN_DIST);
-      for (let si = 0; si < stars.length; si++) {
-        const s = stars[si];
-        const col = Math.floor(s.x / CONN_DIST);
-        const row = Math.floor(s.y / CONN_DIST);
-        for (let dc = -1; dc <= 1; dc++) {
-          for (let dr = -1; dr <= 1; dr++) {
-            const nc = col + dc, nr = row + dr;
-            if (nc < 0 || nc >= cols || nr < 0 || nr >= rows) continue;
-            const cell = grid[nr * cols + nc];
-            for (const ti of cell) {
-              if (ti <= si) continue;
-              const t = stars[ti];
-              const dx = s.x - t.x, dy = s.y - t.y;
-              const d = Math.sqrt(dx*dx + dy*dy);
-              if (d < CONN_DIST) {
-                const a = (1 - d / CONN_DIST) * 0.072;
-                c.strokeStyle = `rgba(200,200,240,${a.toFixed(3)})`;
-                c.lineWidth = 0.5;
-                c.beginPath(); c.moveTo(s.x, s.y); c.lineTo(t.x, t.y); c.stroke();
-              }
-            }
-          }
+      /* Minor lines */
+      c.strokeStyle = "rgba(255,255,255,0.016)";
+      for (let x = GRID; x < W; x += GRID) {
+        if (x % (GRID * 4) === 0) continue;
+        c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke();
+      }
+      for (let y = GRID; y < H; y += GRID) {
+        if (y % (GRID * 4) === 0) continue;
+        c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
+      }
+
+      /* ── Lissajous figures ──────────────────────────────────── */
+      const STEPS = 900;
+      for (const fig of FIGURES) {
+        const cx   = fig.cx * W;
+        const cy   = fig.cy * H;
+        const rx   = fig.rx * H;
+        const ry   = fig.ry * H;
+        const phase = t * fig.rate;
+
+        c.strokeStyle = `rgba(220,225,255,${fig.alpha})`;
+        c.lineWidth = 0.7;
+        c.beginPath();
+        for (let i = 0; i <= STEPS; i++) {
+          const θ = (i / STEPS) * Math.PI * 2;
+          const px = cx + rx * Math.sin(fig.a * θ + phase);
+          const py = cy + ry * Math.sin(fig.b * θ);
+          i === 0 ? c.moveTo(px, py) : c.lineTo(px, py);
         }
+        c.closePath();
+        c.stroke();
       }
 
-      /* ── Star dots ──────────────────────────────────────────── */
-      for (const s of stars) {
-        c.fillStyle = `rgba(210,215,255,${s.a.toFixed(2)})`;
-        c.beginPath(); c.arc(s.x, s.y, s.r, 0, Math.PI*2); c.fill();
-      }
+      /* ── Equilibrium reference axis — dashed ────────────────── */
+      c.strokeStyle = "rgba(168,0,36,0.20)";
+      c.lineWidth = 0.75;
+      c.setLineDash([4, 10]);
+      c.beginPath();
+      c.moveTo(W * 0.46, H * 0.5);
+      c.lineTo(W * 0.985, H * 0.5);
+      c.stroke();
+      c.setLineDash([]);
 
-      /* ── Soft maroon haze along spine ───────────────────────── */
-      if (nodes.length > 1) {
-        const hazeGrad = c.createLinearGradient(nodes[0].x, nodes[0].y, nodes[nodes.length-1].x, nodes[nodes.length-1].y);
-        hazeGrad.addColorStop(0, "rgba(168,0,36,0)");
-        hazeGrad.addColorStop(0.35, "rgba(168,0,36,0.06)");
-        hazeGrad.addColorStop(0.65, "rgba(168,0,36,0.06)");
-        hazeGrad.addColorStop(1, "rgba(168,0,36,0)");
-        c.strokeStyle = hazeGrad;
-        c.lineWidth = 18;
+      /* ── Pipeline spine — soft haze ─────────────────────────── */
+      {
+        const haze = c.createLinearGradient(nodes[0].x, 0, nodes[nodes.length-1].x, 0);
+        haze.addColorStop(0,   "rgba(168,0,36,0)");
+        haze.addColorStop(0.3, "rgba(168,0,36,0.065)");
+        haze.addColorStop(0.7, "rgba(168,0,36,0.065)");
+        haze.addColorStop(1,   "rgba(168,0,36,0)");
+        c.strokeStyle = haze;
+        c.lineWidth = 16;
         c.lineCap = "round";
         c.beginPath();
         c.moveTo(nodes[0].x, nodes[0].y);
@@ -173,8 +165,8 @@ export default function ApplyCanvas() {
         c.stroke();
       }
 
-      /* ── Pipeline spine — dim backbone ──────────────────────── */
-      c.strokeStyle = "rgba(168,0,36,0.18)";
+      /* ── Pipeline spine — crisp backbone ────────────────────── */
+      c.strokeStyle = "rgba(168,0,36,0.22)";
       c.lineWidth = 1;
       c.lineCap = "butt";
       c.beginPath();
@@ -189,7 +181,7 @@ export default function ApplyCanvas() {
       EDGES.forEach(([fi, ti]) => {
         const a = nodes[fi], b = nodes[ti], cp = cps[fi];
         const g = c.createLinearGradient(a.x, a.y, b.x, b.y);
-        g.addColorStop(0, "rgba(220,0,48,0.55)");
+        g.addColorStop(0, "rgba(220,0,48,0.60)");
         g.addColorStop(1, "rgba(220,0,48,0.05)");
         c.strokeStyle = g;
         c.lineWidth = 1.2;
@@ -204,81 +196,68 @@ export default function ApplyCanvas() {
         const [fi, ti] = EDGES[p.ei];
         const pos = evalBez(nodes[fi], cps[fi], nodes[ti], p.t);
 
-        /* Wide bloom halo */
         const bloom = c.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, p.r * 7);
-        bloom.addColorStop(0, "rgba(235,55,80,0.42)");
+        bloom.addColorStop(0, "rgba(235,55,80,0.44)");
         bloom.addColorStop(1, "rgba(235,55,80,0)");
         c.fillStyle = bloom;
-        c.beginPath(); c.arc(pos.x, pos.y, p.r * 7, 0, Math.PI*2); c.fill();
+        c.beginPath(); c.arc(pos.x, pos.y, p.r * 7, 0, Math.PI * 2); c.fill();
 
-        /* Mid glow */
         const mid = c.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, p.r * 3);
-        mid.addColorStop(0, "rgba(255,140,165,0.78)");
+        mid.addColorStop(0, "rgba(255,140,165,0.80)");
         mid.addColorStop(1, "rgba(255,140,165,0)");
         c.fillStyle = mid;
-        c.beginPath(); c.arc(pos.x, pos.y, p.r * 3, 0, Math.PI*2); c.fill();
+        c.beginPath(); c.arc(pos.x, pos.y, p.r * 3, 0, Math.PI * 2); c.fill();
 
-        /* Bright core */
         c.fillStyle = "rgba(255,230,238,0.97)";
-        c.beginPath(); c.arc(pos.x, pos.y, p.r * 0.55, 0, Math.PI*2); c.fill();
+        c.beginPath(); c.arc(pos.x, pos.y, p.r * 0.55, 0, Math.PI * 2); c.fill();
 
         p.t += p.speed;
         if (p.t >= 1) { p.t = 0; nodes[ti].pingAge = 1; }
       }
 
       /* ── Nodes ──────────────────────────────────────────────── */
-      const now = performance.now() * 0.001;
       nodes.forEach((n, i) => {
-        const phase = now * 1.4 + i * 1.1;
-        const pulse = 0.5 + 0.5 * Math.sin(phase);
+        const φ  = t * 1.4 + i * 1.1;
+        const p1 = 0.5 + 0.5 * Math.sin(φ);
+        const p2 = 0.5 + 0.5 * Math.sin(φ + Math.PI);
 
-        /* Ping ring */
         if (n.pingAge > 0) {
           const pr = 18 + (1 - n.pingAge) * 22;
-          c.strokeStyle = `rgba(230,50,80,${(n.pingAge * 0.7).toFixed(3)})`;
+          c.strokeStyle = `rgba(230,50,80,${(n.pingAge * 0.70).toFixed(3)})`;
           c.lineWidth = 1.1;
-          c.beginPath(); c.arc(n.x, n.y, pr, 0, Math.PI*2); c.stroke();
+          c.beginPath(); c.arc(n.x, n.y, pr, 0, Math.PI * 2); c.stroke();
           n.pingAge = Math.max(0, n.pingAge - 0.018);
         }
 
-        /* Outermost slow-pulse ring */
-        const or = 32 + pulse * 4;
-        c.strokeStyle = `rgba(168,0,36,${(0.07 + pulse * 0.10).toFixed(3)})`;
+        c.strokeStyle = `rgba(168,0,36,${(0.07 + p1 * 0.10).toFixed(3)})`;
         c.lineWidth = 0.8;
-        c.beginPath(); c.arc(n.x, n.y, or, 0, Math.PI*2); c.stroke();
+        c.beginPath(); c.arc(n.x, n.y, 32 + p1 * 4, 0, Math.PI * 2); c.stroke();
 
-        /* Second ring — counter-phase */
-        const pulse2 = 0.5 + 0.5 * Math.sin(phase + Math.PI);
-        c.strokeStyle = `rgba(168,0,36,${(0.12 + pulse2 * 0.12).toFixed(3)})`;
+        c.strokeStyle = `rgba(168,0,36,${(0.12 + p2 * 0.12).toFixed(3)})`;
         c.lineWidth = 0.7;
-        c.beginPath(); c.arc(n.x, n.y, 22 + pulse2 * 2, 0, Math.PI*2); c.stroke();
+        c.beginPath(); c.arc(n.x, n.y, 22 + p2 * 2, 0, Math.PI * 2); c.stroke();
 
-        /* Inner ring */
-        c.strokeStyle = "rgba(210,0,48,0.52)";
+        c.strokeStyle = "rgba(210,0,48,0.54)";
         c.lineWidth = 1;
-        c.beginPath(); c.arc(n.x, n.y, 15, 0, Math.PI*2); c.stroke();
+        c.beginPath(); c.arc(n.x, n.y, 15, 0, Math.PI * 2); c.stroke();
 
-        /* Node body */
         const bg = c.createRadialGradient(n.x-3, n.y-3, 0, n.x, n.y, 15);
         bg.addColorStop(0, "rgba(220,0,46,0.38)");
         bg.addColorStop(1, "rgba(60,0,12,0.18)");
-        c.fillStyle = bg; c.beginPath(); c.arc(n.x, n.y, 15, 0, Math.PI*2); c.fill();
+        c.fillStyle = bg; c.beginPath(); c.arc(n.x, n.y, 15, 0, Math.PI * 2); c.fill();
 
-        /* Inner specular */
         const hl = c.createRadialGradient(n.x-4, n.y-5, 0, n.x, n.y, 15);
-        hl.addColorStop(0, "rgba(255,255,255,0.1)");
+        hl.addColorStop(0, "rgba(255,255,255,0.10)");
         hl.addColorStop(1, "rgba(255,255,255,0)");
-        c.fillStyle = hl; c.beginPath(); c.arc(n.x, n.y, 15, 0, Math.PI*2); c.fill();
+        c.fillStyle = hl; c.beginPath(); c.arc(n.x, n.y, 15, 0, Math.PI * 2); c.fill();
 
-        /* Step number */
-        c.fillStyle = "rgba(255,195,210,0.9)";
+        c.fillStyle = "rgba(255,195,210,0.90)";
         c.font = "600 7.5px ui-monospace, monospace";
         c.textAlign = "center"; c.textBaseline = "middle";
         c.fillText(NODES[i].n, n.x, n.y);
 
-        /* Label */
         const above = n.y < H * 0.5;
-        c.fillStyle = "rgba(160,160,200,0.52)";
+        c.fillStyle = "rgba(155,155,195,0.52)";
         c.font = "7.5px ui-monospace, monospace";
         c.fillText(NODES[i].label.toUpperCase(), n.x, n.y + (above ? -28 : 28));
       });
