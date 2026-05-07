@@ -226,7 +226,7 @@ export default function Apply() {
             style={{ display: "flex", flexDirection: "column", gap: "12px" }}
           >
             {/* Personal */}
-            <Card title="Personal Information" step="01">
+            <Card title="Personal Information" step="01" sub="Required for BMDC matching and TLI stipend processing through UMN Finance">
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "18px" }}>
                 <div>
                   <Label>Full Name *</Label>
@@ -275,7 +275,7 @@ export default function Apply() {
             </Card>
 
             {/* Program */}
-            <Card title="Program & Availability" step="02">
+            <Card title="Program & Availability" step="02" sub="Your preference helps BMDC staff match you to the right project team and PI">
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div>
                   <Label>Preferred Program *</Label>
@@ -285,6 +285,29 @@ export default function Apply() {
                     <option value="">Select program</option>
                     {programs.map(p => <option key={p.id}>{p.label}</option>)}
                   </select>
+                  {/* Program reference guide */}
+                  <div style={{ marginTop: 10, borderRadius: 8, border: `1px solid ${L.soft}`, overflow: "hidden" }}>
+                    {[
+                      { id: "IFP",     desc: "Translational research with clinician mentorship. Semester-long, 8–14 hrs/week." },
+                      { id: "MedWorX", desc: "Contract engineering for medical device startups. Project-scoped deliverables." },
+                      { id: "ANU",     desc: "Anatomy U — educational content development for clinical training programs." },
+                      { id: "CLIP",    desc: "Clinician-led projects addressing real workflow problems with care team partners." },
+                    ].map((p, i) => (
+                      <div key={p.id} style={{
+                        display: "flex", gap: 10, alignItems: "flex-start",
+                        padding: "7px 12px",
+                        background: i % 2 === 0 ? "rgba(0,0,0,0.018)" : "transparent",
+                        borderBottom: i < 3 ? `1px solid ${L.soft}` : "none",
+                      }}>
+                        <span style={{
+                          fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",
+                          fontWeight: 700, color: L.maroon, flexShrink: 0, paddingTop: 1,
+                          letterSpacing: "0.04em",
+                        }}>{p.id}</span>
+                        <span style={{ fontSize: "0.74rem", color: L.sub, lineHeight: 1.5 }}>{p.desc}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                   <div>
@@ -328,11 +351,22 @@ export default function Apply() {
                   }}
                   onFocus={onFocus} onBlur={onBlur}
                 />
+                <div style={{
+                  marginTop: 10, padding: "10px 14px",
+                  background: "rgba(168,0,36,0.035)",
+                  border: "1px solid rgba(168,0,36,0.1)",
+                  borderRadius: 8,
+                }}>
+                  <p style={{ fontSize: "0.71rem", color: L.sub, lineHeight: 1.65, margin: 0 }}>
+                    <strong style={{ color: L.maroon, fontWeight: 600 }}>Strong answers</strong> name specific tools, techniques, and clinical contexts —
+                    e.g. "SolidWorks for FDA Class II enclosures" or "bilingual patient-facing research in Mandarin and Spanish." Vague answers reduce your chance of a match.
+                  </p>
+                </div>
               </div>
             </Card>
 
             {/* Goals */}
-            <Card title="Goals & Background" step="04">
+            <Card title="Goals & Background" step="04" sub="Optional context that helps project leads understand your learning goals and research fit">
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div>
                   <Label>What do you hope to gain?</Label>
@@ -363,6 +397,33 @@ export default function Apply() {
               borderRadius: 14, padding: "24px 32px",
               boxShadow: "0 2px 16px rgba(0,0,0,0.06)",
             }}>
+              {/* After submission timeline */}
+              <div style={{
+                background: "rgba(0,0,0,0.025)", borderRadius: 8,
+                padding: "14px 16px", marginBottom: 20,
+              }}>
+                <p style={{
+                  fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",
+                  letterSpacing: "0.12em", textTransform: "uppercase",
+                  color: L.muted, marginBottom: 10,
+                }}>
+                  After submission
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                  {[
+                    "BMDC staff review within 3–5 business days",
+                    "Match notification by email — two-way evaluation",
+                    "Team intro meeting within 2 weeks of confirmed match",
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <span style={{ ...mG, fontFamily: "ui-monospace,monospace", fontSize: "0.6rem", flexShrink: 0, paddingTop: 1 }}>
+                        0{i + 1}
+                      </span>
+                      <span style={{ fontSize: "0.78rem", color: L.sub, lineHeight: 1.5 }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
               <p style={{ fontSize: "0.8rem", color: L.sub, lineHeight: 1.82, marginBottom: 16 }}>
                 By submitting I confirm: (1) a TLI Fellow has recommended me; (2) I have reviewed visa
                 eligibility requirements; (3) I understand participation requires an IP assignment
@@ -399,9 +460,8 @@ export default function Apply() {
             }}>
               <div style={{
                 padding: "24px 24px 20px",
-                background: "linear-gradient(135deg, #7a0019 0%, #c4002e 100%)",
-                backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
-                backgroundSize: "20px 20px",
+                background: "radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(135deg, #7a0019 0%, #c4002e 100%)",
+                backgroundSize: "20px 20px, auto",
               }}>
                 <p style={{
                   fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",

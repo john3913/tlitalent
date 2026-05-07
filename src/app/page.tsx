@@ -98,17 +98,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STEPS — dark navy, Apple/Palantir ══════════════════════ */}
+      {/* ═══ STEPS — deep navy, clearly differentiated from hero ═══ */}
       <section style={{
         position: "relative", overflow: "hidden",
-        background: "linear-gradient(160deg, #0d1022 0%, #090a12 100%)",
-        borderTop: "1px solid rgba(255,255,255,0.07)",
+        background: "#07091e",
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
-        {/* Ambient glow — visually separates from hero */}
+        {/* Maroon accent bar — hard break from hero's warm dark */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "60%",
-          background: "radial-gradient(ellipse 80% 100% at 50% -10%, rgba(168,0,36,0.12) 0%, transparent 100%)",
+          position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+          background: "linear-gradient(to right, transparent 5%, rgba(168,0,36,0.55) 25%, rgba(220,80,110,0.7) 50%, rgba(168,0,36,0.55) 75%, transparent 95%)",
+        }}/>
+        {/* Dot grid — gives this section distinct material quality vs hero canvas */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          pointerEvents: "none",
+        }}/>
+        {/* Ambient glow — stronger, wider spread */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: "75%",
+          background: "radial-gradient(ellipse 100% 150% at 50% -20%, rgba(168,0,36,0.22) 0%, rgba(80,0,30,0.06) 60%, transparent 100%)",
           pointerEvents: "none",
         }}/>
 
@@ -189,10 +200,11 @@ export default function Home() {
                 borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 position: "relative", overflow: "hidden",
+                background: "rgba(255,255,255,0.015)",
                 transition: "background 0.2s",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.045)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.07)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.015)")}
               >
                 {/* Ghost watermark */}
                 <div style={{
