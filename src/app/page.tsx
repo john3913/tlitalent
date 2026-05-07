@@ -3,12 +3,30 @@ import Link from "next/link";
 import HeroCanvas from "@/components/HeroCanvas";
 
 const steps = [
-  { n: "01", title: "TLI Fellow recommends you",        who: "Your Fellow"   },
-  { n: "02", title: "Submit interest form & resume",    who: "You"           },
-  { n: "03", title: "BMDC reviews & matches",           who: "BMDC Staff"    },
-  { n: "04", title: "Meet the project team",            who: "You + BMDC"    },
-  { n: "05", title: "Sign your agreement",              who: "You"           },
-  { n: "06", title: "Start your project",               who: "You + BMDC"    },
+  {
+    n: "01", title: "TLI Fellow Recommendation", who: "Your Fellow",
+    body: "Your TLI Fellow identifies you as a strong candidate and initiates your introduction into the BMDC matching pipeline. Priority is given to MDI, ST, and MOT students.",
+  },
+  {
+    n: "02", title: "Submit Your Materials", who: "You",
+    body: "Complete the interest form with your resume and a pitch answering 'What five things will you bring to the BMDC?' This is BMDC's primary signal for evaluating fit.",
+  },
+  {
+    n: "03", title: "Candidate Review & Matching", who: "BMDC Staff",
+    body: "BMDC staff review all submitted candidates and match students to open project teams based on skills, interests, and project needs. Bakken drives the decision.",
+  },
+  {
+    n: "04", title: "Meet the Project Team", who: "You + BMDC",
+    body: "If there's a strong match, you'll meet the project lead to discuss expectations, logistics, start date, training needs, and your weekly commitment.",
+  },
+  {
+    n: "05", title: "Sign Your Agreement", who: "You",
+    body: "Sign the Research Team Participation Agreement (stipend track) or Volunteer Researcher Agreement. Both assign intellectual property to the University of Minnesota.",
+  },
+  {
+    n: "06", title: "Confirm Stipend & Start", who: "You + TLI",
+    body: "Agree to the scholarship amount. TLI Finance applies your stipend to your UMN student financial account in the first week of your appointment.",
+  },
 ];
 
 const W = { maxWidth: 1360, margin: "0 auto", padding: "0 4rem" };
@@ -80,72 +98,146 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STEPS (light) ═══════════════════════════════════════ */}
-      <section style={{ background: L.bg, padding: "7rem 0 6rem", borderTop: `1px solid ${L.border}` }}>
+      {/* ═══ STEPS — dark Palantir pipeline ══════════════════════ */}
+      <section style={{
+        background: "#0b0b10",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+      }}>
         <div style={W}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "3.5rem" }}>
+
+          {/* Header row */}
+          <div style={{
+            display: "grid", gridTemplateColumns: "1fr auto 1fr",
+            alignItems: "center", gap: "2rem",
+            padding: "4.5rem 0 3.5rem",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
+          }}>
             <div>
               <p style={{
-                fontFamily: "ui-monospace,monospace", fontSize: "0.64rem",
+                fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
                 letterSpacing: "0.12em", textTransform: "uppercase",
-                color: L.textMuted, marginBottom: "0.7rem",
+                color: "#404050", marginBottom: "0.6rem",
               }}>
                 How it works
               </p>
               <h2 style={{
-                fontSize: "clamp(2rem, 3vw, 2.5rem)", fontWeight: 600,
-                letterSpacing: "-0.038em", color: L.text, margin: 0,
+                fontSize: "clamp(1.9rem, 3vw, 2.5rem)", fontWeight: 600,
+                letterSpacing: "-0.038em", color: "#ffffff", margin: 0,
               }}>
                 From interest to first day.
               </h2>
             </div>
-            <Link href="/process" className="btn-light" style={{ fontSize: "13px", padding: "8px 18px" }}>
-              Full guide →
-            </Link>
+
+            {/* Node pipeline visualization */}
+            <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+              {steps.map((s, i) => (
+                <div key={s.n} style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: "50%",
+                    border: "1px solid rgba(192,0,46,0.35)",
+                    background: "rgba(192,0,46,0.07)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0, position: "relative",
+                  }}>
+                    {/* Subtle pulse ring */}
+                    <div style={{
+                      position: "absolute", inset: -5,
+                      borderRadius: "50%", border: "1px solid rgba(192,0,46,0.1)",
+                    }}/>
+                    <span style={{
+                      ...mG,
+                      fontFamily: "ui-monospace,monospace",
+                      fontSize: "0.6rem", letterSpacing: "0.04em",
+                    }}>
+                      {s.n}
+                    </span>
+                  </div>
+                  {i < steps.length - 1 && (
+                    <div style={{
+                      width: 32, height: 1, flexShrink: 0,
+                      background: "linear-gradient(to right, rgba(192,0,46,0.35), rgba(192,0,46,0.12))",
+                    }}/>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ textAlign: "right" }}>
+              <Link href="/process" className="btn-outline" style={{ fontSize: "13px", padding: "8px 18px" }}>
+                Full guide →
+              </Link>
+            </div>
           </div>
 
-          {/* Steps table — white card */}
-          <div style={{
-            background: L.white, borderRadius: 14,
-            border: `1px solid ${L.border}`,
-            boxShadow: "0 4px 40px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.05)",
-            overflow: "hidden",
-          }}>
+          {/* 2 × 3 step grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
             {steps.map((s, i) => (
-              <Link key={s.n} href="/process" style={{
-                display: "flex", alignItems: "center", gap: "2.5rem",
-                padding: "1.5rem 2.25rem",
-                borderBottom: i < steps.length - 1 ? `1px solid ${L.borderSubtle}` : "none",
-                textDecoration: "none", background: "transparent",
-                transition: "background 0.14s",
+              <div key={s.n} style={{
+                padding: "3rem 3.5rem",
+                borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.055)" : "none",
+                borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.055)" : "none",
+                position: "relative", overflow: "hidden",
+                transition: "background 0.18s",
+                cursor: "default",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.028)")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(192,0,46,0.025)")}
                 onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
               >
-                <span style={{
-                  ...mG,
+                {/* Watermark step number */}
+                <div style={{
+                  position: "absolute", top: "-0.5rem", right: "1.25rem",
+                  fontSize: "7.5rem", fontWeight: 800,
                   fontFamily: "ui-monospace,monospace",
-                  fontSize: "0.68rem", letterSpacing: "0.07em",
-                  flexShrink: 0, width: "2rem",
+                  color: "rgba(168,0,36,0.065)", lineHeight: 1,
+                  pointerEvents: "none", userSelect: "none",
+                  letterSpacing: "-0.05em",
                 }}>
                   {s.n}
-                </span>
-                <span style={{
-                  flex: 1, fontSize: "0.97rem", color: L.text,
-                  fontWeight: 500, letterSpacing: "-0.01em",
+                </div>
+
+                {/* Step + Who row */}
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.6rem",
+                  marginBottom: "1.4rem",
+                  padding: "4px 10px 4px 0",
+                }}>
+                  <span style={{
+                    ...mG,
+                    fontFamily: "ui-monospace,monospace",
+                    fontSize: "0.62rem", letterSpacing: "0.1em",
+                    fontWeight: 600,
+                  }}>
+                    STEP {s.n}
+                  </span>
+                  <span style={{ width: 1, height: 10, background: "rgba(255,255,255,0.1)", display: "inline-block" }}/>
+                  <span style={{
+                    fontFamily: "ui-monospace,monospace", fontSize: "0.58rem",
+                    letterSpacing: "0.1em", textTransform: "uppercase",
+                    color: "#383848",
+                  }}>
+                    {s.who}
+                  </span>
+                </div>
+
+                <h3 style={{
+                  fontSize: "1.05rem", fontWeight: 600,
+                  color: "#e0e0ec", letterSpacing: "-0.02em",
+                  lineHeight: 1.3, marginBottom: "0.85rem",
                 }}>
                   {s.title}
-                </span>
-                <span style={{
-                  fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
-                  letterSpacing: "0.1em", textTransform: "uppercase", color: L.textMuted,
+                </h3>
+
+                <p style={{
+                  fontSize: "0.82rem", color: "#4a4a5c",
+                  lineHeight: 1.78, margin: 0,
                 }}>
-                  {s.who}
-                </span>
-                <span style={{ color: "#c0c0cc", fontSize: "0.82rem" }}>→</span>
-              </Link>
+                  {s.body}
+                </p>
+              </div>
             ))}
           </div>
+
         </div>
       </section>
 
