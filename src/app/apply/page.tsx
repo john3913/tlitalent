@@ -3,14 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 import ApplyCanvas from "@/components/ApplyCanvas";
 
-const programs = [
-  { id: "ifp",  label: "Innovation Fellows Program (IFP)"          },
-  { id: "mwx",  label: "MedWorX Contract Engineering"              },
-  { id: "anu",  label: "Anatomy U"                                 },
-  { id: "clip", label: "Clinician Led Innovation Program (CLIP)"   },
-  { id: "urop", label: "UROP — Independent Research at BMDC"       },
-  { id: "open", label: "Not sure — open to matching"               },
-];
 
 const visaTypes = [
   "U.S. Citizen or Permanent Resident",
@@ -126,9 +118,9 @@ function Card({ title, sub, step, children }: { title: string; sub?: string; ste
 export default function Apply() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
-    name: "", email: "", studentId: "", program: "",
+    name: "", email: "", studentId: "",
     major: "", year: "", visa: "", resume: "",
-    availability: "", hours: "", fiveThings: "", goals: "", agree: false,
+    fiveThings: "", goals: "", agree: false,
   });
 
   const set = (k: string, v: string | boolean) => setForm(f => ({ ...f, [k]: v }));
@@ -205,9 +197,8 @@ export default function Apply() {
             {/* Stats chips — glass dark */}
             <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
               {[
-                { n: "4 Programs", sub: "IFP · MedWorX · ANU · CLIP" },
-                { n: "~$1,000",    sub: "Est. semester stipend"        },
-                { n: "<14 hrs",    sub: "Per week"                    },
+                { n: "~$1,000", sub: "Est. semester stipend" },
+                { n: "<14 hrs", sub: "Per week"              },
               ].map(s => (
                 <div key={s.n} style={{
                   padding: "5px 13px", borderRadius: 6,
@@ -281,69 +272,11 @@ export default function Apply() {
               </div>
             </Card>
 
-            {/* Program */}
-            <Card title="Program & Availability" step="02" sub="Your preference helps BMDC staff match you to the right project team and PI">
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div>
-                  <Label>Preferred Program *</Label>
-                  <select required value={form.program} onChange={e => set("program", e.target.value)}
-                    style={{ ...IS, color: form.program ? L.text : L.muted }}
-                    onFocus={onFocus} onBlur={onBlur}>
-                    <option value="">Select program</option>
-                    {programs.map(p => <option key={p.id}>{p.label}</option>)}
-                  </select>
-                  {/* Program reference guide */}
-                  <div style={{ marginTop: 10, borderRadius: 8, border: `1px solid ${L.soft}`, overflow: "hidden" }}>
-                    {[
-                      { id: "IFP",     desc: "Translational research with clinician mentorship. Semester-long, 8–14 hrs/week." },
-                      { id: "MedWorX", desc: "Contract engineering for medical device startups. Project-scoped deliverables." },
-                      { id: "ANU",     desc: "Anatomy U — educational content development for clinical training programs." },
-                      { id: "CLIP",    desc: "Clinician-led projects addressing real workflow problems with care team partners." },
-                    ].map((p, i) => (
-                      <div key={p.id} style={{
-                        display: "flex", gap: 10, alignItems: "flex-start",
-                        padding: "7px 12px",
-                        background: i % 2 === 0 ? "rgba(0,0,0,0.018)" : "transparent",
-                        borderBottom: i < 3 ? `1px solid ${L.soft}` : "none",
-                      }}>
-                        <span style={{
-                          fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",
-                          fontWeight: 700, color: L.maroon, flexShrink: 0, paddingTop: 1,
-                          letterSpacing: "0.04em",
-                        }}>{p.id}</span>
-                        <span style={{ fontSize: "0.74rem", color: L.sub, lineHeight: 1.5 }}>{p.desc}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                  <div>
-                    <Label>Weekly Availability</Label>
-                    <select value={form.availability} onChange={e => set("availability", e.target.value)}
-                      style={{ ...IS, color: form.availability ? L.text : L.muted }}
-                      onFocus={onFocus} onBlur={onBlur}>
-                      <option value="">Select schedule</option>
-                      {["Weekdays flexible","Mon / Wed / Fri","Tue / Thu","Afternoons only"].map(o => <option key={o}>{o}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <Label>Hours per Week</Label>
-                    <select value={form.hours} onChange={e => set("hours", e.target.value)}
-                      style={{ ...IS, color: form.hours ? L.text : L.muted }}
-                      onFocus={onFocus} onBlur={onBlur}>
-                      <option value="">Select range</option>
-                      {["5–8 hours","8–12 hours","12–14 hours"].map(o => <option key={o}>{o}</option>)}
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
             {/* Five Things */}
             <Card
               title="Your Five Things Pitch"
               sub="BMDC project leads use this as the primary signal to evaluate fit. Name specific tools, techniques, clinical environments, and skills — vague answers reduce your chance of a match."
-              step="03"
+              step="02"
             >
               <div>
                 <Label>What five things will you bring to the BMDC? *</Label>
@@ -373,7 +306,7 @@ export default function Apply() {
             </Card>
 
             {/* Goals */}
-            <Card title="Goals & Background" step="04" sub="Optional context that helps project leads understand your learning goals and research fit">
+            <Card title="Goals & Background" step="03" sub="Optional context that helps project leads understand your learning goals and research fit">
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div>
                   <Label>What do you hope to gain?</Label>
@@ -516,12 +449,12 @@ export default function Apply() {
                 </p>
               </div>
               {[
-                { n: "01", label: "Fellow recommends you" },
+                { n: "01", label: "Fellow recommends you"  },
                 { n: "02", label: "Submit this form", active: true },
                 { n: "03", label: "BMDC reviews & matches" },
-                { n: "04", label: "Meet the team" },
-                { n: "05", label: "Sign agreement" },
-                { n: "06", label: "Start working" },
+                { n: "04", label: "Meet the team"          },
+                { n: "05", label: "Sign agreement"         },
+                { n: "06", label: "Start working"          },
               ].map((s, i) => (
                 <div key={s.n} style={{
                   display: "flex", alignItems: "center", gap: 10,

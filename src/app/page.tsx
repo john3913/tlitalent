@@ -98,28 +98,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STEPS — deep navy, clearly differentiated from hero ═══ */}
+      {/* ═══ STEPS — cold blue-midnight, distinct from hero's warm dark ═ */}
       <section style={{
         position: "relative", overflow: "hidden",
-        background: "#07091e",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        background: "#06102c",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
       }}>
-        {/* Maroon accent bar — hard break from hero's warm dark */}
+        {/* 2px maroon accent bar — unmistakable hard section break */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "1px",
-          background: "linear-gradient(to right, transparent 5%, rgba(168,0,36,0.55) 25%, rgba(220,80,110,0.7) 50%, rgba(168,0,36,0.55) 75%, transparent 95%)",
+          position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+          background: "linear-gradient(to right, transparent 4%, rgba(168,0,36,0.75) 22%, rgba(220,80,110,0.88) 50%, rgba(168,0,36,0.75) 78%, transparent 96%)",
         }}/>
-        {/* Dot grid — gives this section distinct material quality vs hero canvas */}
+        {/* Dot grid — structural texture vs hero's flowing canvas */}
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.022) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           pointerEvents: "none",
         }}/>
-        {/* Ambient glow — stronger, wider spread */}
+        {/* Ambient glow — wider, stronger */}
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0, height: "75%",
-          background: "radial-gradient(ellipse 100% 150% at 50% -20%, rgba(168,0,36,0.22) 0%, rgba(80,0,30,0.06) 60%, transparent 100%)",
+          background: "radial-gradient(ellipse 110% 160% at 50% -25%, rgba(168,0,36,0.24) 0%, rgba(60,10,60,0.06) 60%, transparent 100%)",
           pointerEvents: "none",
         }}/>
 
@@ -200,11 +200,11 @@ export default function Home() {
                 borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 position: "relative", overflow: "hidden",
-                background: "rgba(255,255,255,0.015)",
+                background: "rgba(255,255,255,0.028)",
                 transition: "background 0.2s",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.07)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.015)")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.08)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.028)")}
               >
                 {/* Ghost watermark */}
                 <div style={{
