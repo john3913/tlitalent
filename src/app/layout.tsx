@@ -17,9 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col">
         <Nav />
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-[#222226] py-8 mt-16">
-          <div className="max-w-6xl mx-auto px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-[13px] text-[#6e6e73]">TLI Talent &mdash; University of Minnesota</span>
+        <footer className="border-t border-[#1e1e22] py-10 mt-20">
+          <div className="max-w-[1360px] mx-auto px-8 lg:px-16 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span className="text-[13px] text-[#5a5a60]">TLI Talent &mdash; University of Minnesota</span>
             <p className="label">TLI &times; BMDC Partnership &bull; 2026</p>
           </div>
         </footer>

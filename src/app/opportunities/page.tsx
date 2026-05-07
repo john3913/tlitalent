@@ -68,7 +68,7 @@ export default function Opportunities() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16">
+    <div className="max-w-[1360px] mx-auto px-8 lg:px-16 py-16">
       <p className="label mb-2">BMDC Research Programs</p>
       <h1 className="text-4xl font-bold text-white mb-4">Available Opportunities</h1>
       <p className="text-slate-400 max-w-2xl mb-12 leading-relaxed">

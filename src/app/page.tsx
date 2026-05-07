@@ -1,42 +1,16 @@
 import Link from "next/link";
 import HeroCanvas from "@/components/HeroCanvas";
-
-const stats = [
-  { value: "4", label: "Active Programs" },
-  { value: "$1,500+", label: "Semester Stipend" },
-  { value: "5–14 hrs", label: "Per Week" },
-  { value: "MDI · ST · MOT", label: "Eligible Programs" },
-];
+import ProgramMap from "@/components/ProgramMap";
 
 const programs = [
-  {
-    id: "ifp",
-    tag: "IFP",
-    name: "Innovation Fellows Program",
-    lead: "Danny Sachs",
-    desc: "Embedded with BMDC innovation teams working on early-stage medical device concepts from clinician insights to prototypes.",
-  },
-  {
-    id: "medworx",
-    tag: "MedWorX",
-    name: "MedWorX Contract Engineering",
-    lead: "Eric Little",
-    desc: "Build real models and prototypes alongside clinicians solving active clinical problems. Hands-on fabrication and CAD focus.",
-  },
-  {
-    id: "anatomyu",
-    tag: "Anatomy U",
-    name: "Anatomy U",
-    lead: "Ali Kahlert",
-    desc: "Develop anatomical models integrated with medical devices to advance surgical training and device design education.",
-  },
-  {
-    id: "clip",
-    tag: "CLIP",
-    name: "Clinician Led Innovation",
-    lead: "BMDC Staff",
-    desc: "Multi-semester projects not tied to school calendar. Work directly with clinician-investigators on long-arc challenges.",
-  },
+  { id: "ifp",     tag: "IFP",       name: "Innovation Fellows Program",   lead: "Danny Sachs",
+    desc: "Embedded with BMDC teams from clinician-identified unmet need all the way through early prototype development." },
+  { id: "medworx", tag: "MedWorX",   name: "MedWorX Contract Engineering", lead: "Eric Little",
+    desc: "Build real models and prototypes alongside clinicians solving active clinical problems. Heavy fabrication and CAD focus." },
+  { id: "anatomyu",tag: "Anatomy U", name: "Anatomy U",                    lead: "Ali Kahlert",
+    desc: "Develop anatomical models integrated with medical devices to advance surgical training and device design education." },
+  { id: "clip",    tag: "CLIP",      name: "Clinician Led Innovation",      lead: "BMDC Staff",
+    desc: "Long-arc projects not tied to the school calendar. Work directly with clinician-investigators across multiple semesters." },
 ];
 
 const steps = [
@@ -51,41 +25,56 @@ const steps = [
 export default function Home() {
   return (
     <div>
-      {/* ── Hero ──────────────────────────── */}
-      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+
+      {/* ════════════════════════════════════════
+          HERO
+      ════════════════════════════════════════ */}
+      <section className="relative overflow-hidden flex items-center" style={{ minHeight: "92vh" }}>
         <HeroCanvas />
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0e0e10] to-transparent pointer-events-none z-10" />
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none z-10"
+          style={{ background: "linear-gradient(to top, #0e0e10 0%, transparent 100%)" }}/>
 
-        <div className="relative z-20 max-w-6xl mx-auto px-8 py-28 w-full">
-          <div className="max-w-[680px]">
-            <p className="label mb-6 fade-up">TLI &times; BMDC &nbsp;&bull;&nbsp; University of Minnesota</p>
+        <div className="relative z-20 w-full max-w-[1360px] mx-auto px-8 lg:px-16 py-32">
+          <div className="max-w-[780px]">
+            <p className="label mb-7 fade-up">TLI &times; BMDC &nbsp;&bull;&nbsp; University of Minnesota</p>
 
-            <h1 className="text-[3.4rem] sm:text-[4.2rem] font-semibold text-white leading-[1.06] tracking-[-0.035em] mb-7 fade-up-2">
+            <h1 className="fade-up-2"
+              style={{
+                fontSize: "clamp(3rem, 5.5vw, 5.2rem)",
+                fontWeight: 600,
+                lineHeight: 1.05,
+                letterSpacing: "-0.038em",
+                color: "#f5f5f7",
+                marginBottom: "1.75rem",
+              }}
+            >
               Research internships<br />
               for international<br />
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #e8004a 0%, #8a001e 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
+              <span style={{
+                background: "linear-gradient(130deg, #f03060 0%, #8a001e 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>
                 grad students.
               </span>
             </h1>
 
-            <p className="text-[1.05rem] text-[#98989f] max-w-[520px] mb-10 leading-relaxed fade-up-3">
+            <p className="fade-up-3"
+              style={{
+                fontSize: "1.125rem", color: "#98989f", lineHeight: 1.7,
+                maxWidth: "560px", marginBottom: "2.5rem", fontWeight: 400,
+              }}
+            >
               The Technological Leadership Institute places UMN graduate students
               inside Bakken Medical Devices Center research teams — with stipends,
               mentorship, and real clinical problems to solve.
             </p>
 
-            <div className="flex flex-wrap gap-3 fade-up-4">
-              <Link href="/apply" className="btn-primary px-8 py-[11px] text-[15px]">
+            <div className="flex flex-wrap gap-4 fade-up-4">
+              <Link href="/apply" className="btn-primary px-9 py-3 text-[15px]">
                 Apply Now
               </Link>
-              <Link href="/opportunities" className="btn-outline px-8 py-[11px] text-[15px]">
+              <Link href="/opportunities" className="btn-outline px-9 py-3 text-[15px]">
                 Browse Projects
               </Link>
             </div>
@@ -93,126 +82,122 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Stats ─────────────────────────── */}
-      <section className="border-y border-[#222224]" style={{ background: "linear-gradient(to bottom, #141416, #111113)" }}>
-        <div className="max-w-6xl mx-auto px-8 py-8 grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#222224]">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center px-6">
-              <div
-                className="text-[1.7rem] font-semibold tracking-tight mb-0.5"
-                style={{
-                  background: "linear-gradient(to bottom, #ffffff 0%, #b0b0b8 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {s.value}
-              </div>
-              <div className="label">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ════════════════════════════════════════
+          PROGRAM INFOGRAPHIC
+      ════════════════════════════════════════ */}
+      <ProgramMap />
 
-      {/* ── Programs ──────────────────────── */}
-      <section className="max-w-6xl mx-auto px-8 py-24">
-        <div className="flex items-end justify-between mb-10">
+      {/* ════════════════════════════════════════
+          PROGRAM CARDS
+      ════════════════════════════════════════ */}
+      <section className="max-w-[1360px] mx-auto px-8 lg:px-16 py-28">
+        <div className="flex items-end justify-between mb-12">
           <div>
             <p className="label mb-3">Available programs</p>
-            <h2 className="text-[2rem] font-semibold text-white tracking-[-0.02em]">
+            <h2 style={{
+              fontSize: "2.2rem", fontWeight: 600,
+              letterSpacing: "-0.03em",
+              background: "linear-gradient(135deg, #f5f5f7 0%, #888890 100%)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}>
               BMDC Research Teams
             </h2>
           </div>
-          <Link href="/opportunities" className="btn-outline text-[13px] !py-1.5 !px-5">
-            View all
+          <Link href="/opportunities" className="btn-outline text-[13px] !py-[7px] !px-5">
+            View all →
           </Link>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {programs.map((p) => (
             <Link key={p.id} href={`/opportunities#${p.id}`} className="card card-hover p-7 block">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-5">
                 <span className="tag-maroon">{p.tag}</span>
-                <span className="text-[0.78rem] text-[#6e6e73]">{p.lead}</span>
+                <span className="text-[0.75rem] text-[#6e6e73]">{p.lead}</span>
               </div>
-              <h3 className="text-[0.97rem] font-medium text-white mb-2 tracking-[-0.01em]">
+              <h3 style={{ fontSize: "0.95rem", fontWeight: 500, color: "#f0f0f2", letterSpacing: "-0.01em", marginBottom: "0.6rem" }}>
                 {p.name}
               </h3>
-              <p className="text-[0.855rem] text-[#98989f] leading-relaxed">{p.desc}</p>
+              <p style={{ fontSize: "0.845rem", color: "#98989f", lineHeight: 1.65 }}>{p.desc}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ── Process ───────────────────────── */}
-      <section
-        className="border-t border-[#222224]"
-        style={{ background: "linear-gradient(to bottom, #141416, #111113)" }}
-      >
-        <div className="max-w-6xl mx-auto px-8 py-24">
-          <p className="label mb-3">How it works</p>
-          <h2 className="text-[2rem] font-semibold text-white tracking-[-0.02em] mb-12">
-            Six steps from interest to first day.
-          </h2>
+      {/* ════════════════════════════════════════
+          PROCESS
+      ════════════════════════════════════════ */}
+      <section style={{ background: "linear-gradient(to bottom, #111115, #0d0d0f)" }}
+        className="border-t border-[#222226]">
+        <div className="max-w-[1360px] mx-auto px-8 lg:px-16 py-28">
+          <div className="flex items-end justify-between mb-14">
+            <div>
+              <p className="label mb-3">How it works</p>
+              <h2 style={{
+                fontSize: "2.2rem", fontWeight: 600, letterSpacing: "-0.03em",
+                background: "linear-gradient(135deg, #f5f5f7 0%, #888890 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>
+                Six steps from interest<br/>to first day.
+              </h2>
+            </div>
+            <Link href="/process" className="btn-outline text-[13px] !py-[7px] !px-5">
+              Full guide →
+            </Link>
+          </div>
 
-          <div className="grid sm:grid-cols-3 gap-3">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {steps.map(([n, step]) => (
-              <div key={n} className="card p-6">
-                <div
-                  className="text-[1.1rem] font-semibold font-mono mb-3"
-                  style={{
-                    background: "linear-gradient(135deg, #c8003a 0%, #800018 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
+              <div key={n} className="card p-7">
+                <div className="mb-4" style={{
+                  fontSize: "1.05rem", fontWeight: 700,
+                  fontFamily: "ui-monospace, monospace",
+                  background: "linear-gradient(135deg, #d03050 0%, #7a0018 100%)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}>
                   {n}
                 </div>
-                <p className="text-[0.875rem] text-[#d8d8dc] leading-snug">{step}</p>
+                <p style={{ fontSize: "0.9rem", color: "#d8d8dc", lineHeight: 1.55 }}>{step}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8">
-            <Link href="/process" className="btn-outline text-[13px]">
-              Full process guide
+      {/* ════════════════════════════════════════
+          VISA NOTICE
+      ════════════════════════════════════════ */}
+      <section className="max-w-[1360px] mx-auto px-8 lg:px-16 py-24">
+        <div className="rounded-2xl p-10 sm:p-14" style={{
+          background: "linear-gradient(160deg, #191518 0%, #120e11 100%)",
+          border: "1px solid rgba(192,0,58,0.16)",
+          boxShadow: "0 0 80px rgba(144,0,32,0.06)",
+        }}>
+          <div className="max-w-3xl">
+            <p className="label mb-3" style={{ color: "#c0003a" }}>Important</p>
+            <h3 style={{
+              fontSize: "1.4rem", fontWeight: 600, color: "#f0f0f2",
+              letterSpacing: "-0.02em", marginBottom: "1rem",
+            }}>
+              International Student Visa Notice
+            </h3>
+            <p style={{ fontSize: "0.9rem", color: "#98989f", lineHeight: 1.75, marginBottom: "1.5rem" }}>
+              Students on certain temporary visas may only volunteer in positions where others do not receive
+              compensation for the same services.{" "}
+              <span style={{ color: "#e0e0e4", fontWeight: 500 }}>
+                Students with a pending H-1B application at UMN cannot serve as volunteers.
+              </span>{" "}
+              J-1 professors, research scholars, and short-term scholars are permitted.
+            </p>
+            <Link href="/resources#visa"
+              style={{ fontSize: "0.875rem", color: "#d0003a", textDecoration: "underline", textUnderlineOffset: "4px" }}
+              className="hover:opacity-75 transition-opacity">
+              Full visa eligibility guide →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── Visa notice ───────────────────── */}
-      <section className="max-w-6xl mx-auto px-8 py-20">
-        <div
-          className="rounded-2xl p-9"
-          style={{
-            background: "linear-gradient(160deg, #181618 0%, #130e10 100%)",
-            border: "1px solid rgba(192,0,58,0.18)",
-          }}
-        >
-          <p className="label mb-3" style={{ color: "#c0003a" }}>Important</p>
-          <h3 className="text-[1.15rem] font-medium text-white mb-3 tracking-[-0.01em]">
-            International Student Visa Notice
-          </h3>
-          <p className="text-[0.875rem] text-[#98989f] leading-relaxed max-w-2xl mb-5">
-            Students on certain temporary visas may only volunteer in positions where others do not
-            receive compensation for the same services.{" "}
-            <span className="text-[#e0e0e4]">
-              Students with a pending H-1B application at UMN cannot serve as volunteers.
-            </span>{" "}
-            J-1 professors, research scholars, and short-term scholars are permitted.
-          </p>
-          <Link
-            href="/resources#visa"
-            className="text-[0.875rem] underline underline-offset-4 transition-colors"
-            style={{ color: "#d0003a" }}
-          >
-            Full visa eligibility guide →
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

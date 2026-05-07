@@ -45,7 +45,7 @@ export default function Process() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
+    <div className="max-w-3xl mx-auto px-8 lg:px-16 py-16">
       <p className="label mb-2">Student Checklist</p>
       <h1 className="text-4xl font-bold text-white mb-4">How the Program Works</h1>
       <p className="text-slate-400 max-w-2xl mb-16 leading-relaxed">

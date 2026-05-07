@@ -50,7 +50,7 @@ const statusColors: Record<string, string> = {
 
 export default function Admin() {
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16">
+    <div className="max-w-[1360px] mx-auto px-8 lg:px-16 py-16">
       <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
         <div>
           <p className="label mb-2">Internal View</p>

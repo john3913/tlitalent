@@ -1,6 +1,6 @@
 export default function Resources() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
+    <div className="max-w-[1360px] mx-auto px-8 lg:px-16 py-16">
       <p className="label mb-2">Forms &amp; Guidance</p>
       <h1 className="text-4xl font-bold text-white mb-4">Resources</h1>
       <p className="text-slate-400 max-w-2xl mb-14 leading-relaxed">
