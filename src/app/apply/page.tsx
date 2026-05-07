@@ -22,16 +22,16 @@ const visaTypes = [
 
 /* Light palette */
 const L = {
-  bg:      "#f7f5f8",
+  bg:      "#f2f2f5",
   white:   "#ffffff",
-  border:  "rgba(0,0,0,0.07)",
-  soft:    "rgba(0,0,0,0.045)",
-  text:    "#111118",
-  sub:     "#5c5c6c",
-  muted:   "#9898a6",
+  border:  "rgba(0,0,0,0.09)",
+  soft:    "rgba(0,0,0,0.055)",
+  text:    "#0d0d12",
+  sub:     "#52526a",
+  muted:   "#8888a0",
   maroon:  "#a80024",
   inputBg: "#ffffff",
-  inputBd: "rgba(0,0,0,0.11)",
+  inputBd: "rgba(0,0,0,0.12)",
 };
 
 const IS: React.CSSProperties = {
@@ -87,7 +87,7 @@ function Card({ title, sub, children }: { title: string; sub?: string; children:
       border: `1px solid ${L.border}`,
       borderRadius: 14,
       padding: "28px 32px",
-      boxShadow: "0 1px 4px rgba(0,0,0,0.05), 0 4px 20px rgba(0,0,0,0.03)",
+      boxShadow: "0 2px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04)",
     }}>
       <div style={{ borderBottom: `1px solid ${L.soft}`, paddingBottom: 16, marginBottom: 22 }}>
         <h2 style={{ fontSize: "0.92rem", fontWeight: 600, color: L.text, letterSpacing: "-0.01em", margin: 0 }}>
@@ -142,7 +142,7 @@ export default function Apply() {
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <section style={{
-        background: "linear-gradient(to bottom, #ffffff, #f7f5f8)",
+        background: "linear-gradient(to bottom, #ffffff, #f2f2f5)",
         borderBottom: `1px solid ${L.border}`,
         padding: "5rem 0 4.5rem",
       }}>
@@ -169,7 +169,7 @@ export default function Apply() {
               <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
                 {[
                   { n: "4 Programs", sub: "IFP · MedWorX · ANU · CLIP" },
-                  { n: "$1,500+",    sub: "Semester stipend"            },
+                  { n: "~$1,000",    sub: "Est. semester stipend"        },
                   { n: "<14 hrs",    sub: "Per week"                    },
                 ].map(s => (
                   <div key={s.n} style={{
@@ -332,10 +332,11 @@ export default function Apply() {
 
             {/* Agreement */}
             <div style={{
-              background: "linear-gradient(160deg, #fffafa, #fff7f7)",
-              border: "1px solid rgba(168,0,36,0.12)",
+              background: L.white,
+              border: "1px solid rgba(168,0,36,0.15)",
+              borderLeft: "3px solid rgba(168,0,36,0.45)",
               borderRadius: 14, padding: "24px 32px",
-              boxShadow: "0 1px 4px rgba(168,0,36,0.05)",
+              boxShadow: "0 2px 16px rgba(0,0,0,0.06)",
             }}>
               <p style={{ fontSize: "0.8rem", color: L.sub, lineHeight: 1.82, marginBottom: 16 }}>
                 By submitting I confirm: (1) a TLI Fellow has recommended me; (2) I have reviewed visa
@@ -369,7 +370,7 @@ export default function Apply() {
               background: L.white,
               border: `1px solid ${L.border}`,
               borderRadius: 14, overflow: "hidden",
-              boxShadow: "0 2px 16px rgba(0,0,0,0.05)",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.05)",
             }}>
               <div style={{
                 padding: "20px 24px",
@@ -386,10 +387,10 @@ export default function Apply() {
                   fontSize: "2.4rem", fontWeight: 600, letterSpacing: "-0.04em",
                   color: "#ffffff", lineHeight: 1, marginBottom: 6,
                 }}>
-                  $1,500+
+                  ~$1,000
                 </div>
                 <p style={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.62)", lineHeight: 1.6 }}>
-                  Applied as a UMN scholarship to your student account in the first week of your appointment.
+                  Estimated scholarship applied to your student account in the first week of your appointment.
                 </p>
               </div>
               <div style={{ padding: "16px 24px", borderTop: `1px solid ${L.border}` }}>
@@ -413,7 +414,7 @@ export default function Apply() {
               background: L.white,
               border: `1px solid ${L.border}`,
               borderRadius: 14, overflow: "hidden",
-              boxShadow: "0 2px 16px rgba(0,0,0,0.05)",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.05)",
             }}>
               <div style={{ padding: "16px 22px", borderBottom: `1px solid ${L.soft}` }}>
                 <p style={{ fontFamily: "ui-monospace,monospace", fontSize: "0.62rem", letterSpacing: "0.11em", textTransform: "uppercase", color: L.muted, margin: 0 }}>
@@ -463,10 +464,11 @@ export default function Apply() {
 
             {/* Visa */}
             <div style={{
-              background: "linear-gradient(160deg, #fffafa, #fff7f7)",
-              border: "1px solid rgba(168,0,36,0.12)",
+              background: L.white,
+              border: "1px solid rgba(168,0,36,0.15)",
+              borderLeft: "3px solid rgba(168,0,36,0.4)",
               borderRadius: 14, padding: "20px 22px",
-              boxShadow: "0 2px 12px rgba(168,0,36,0.05)",
+              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
             }}>
               <p style={{
                 fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",

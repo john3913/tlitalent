@@ -15,13 +15,13 @@ const W = { maxWidth: 1360, margin: "0 auto", padding: "0 4rem" };
 
 /* Light palette */
 const L = {
-  bg:          "#f7f5f8",
+  bg:          "#f2f2f5",
   white:       "#ffffff",
-  border:      "rgba(0,0,0,0.07)",
-  borderSubtle:"rgba(0,0,0,0.045)",
-  text:        "#111118",
-  textSub:     "#5c5c6c",
-  textMuted:   "#9898a6",
+  border:      "rgba(0,0,0,0.09)",
+  borderSubtle:"rgba(0,0,0,0.055)",
+  text:        "#0d0d12",
+  textSub:     "#52526a",
+  textMuted:   "#8888a0",
   maroon:      "#a80024",
 };
 
@@ -38,12 +38,6 @@ export default function Home() {
       {/* ═══ HERO (dark) ═════════════════════════════════════════ */}
       <section style={{ position: "relative", overflow: "hidden", minHeight: "92vh", display: "flex", alignItems: "center" }}>
         <HeroCanvas />
-        {/* Fade down into the light sections */}
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0, height: 240,
-          pointerEvents: "none", zIndex: 10,
-          background: "linear-gradient(to top, #f7f5f8 0%, transparent 100%)",
-        }}/>
 
         <div style={{ ...W, position: "relative", zIndex: 20, width: "100%", padding: "8rem 4rem" }}>
           <div style={{ maxWidth: 800 }}>
@@ -87,7 +81,7 @@ export default function Home() {
       </section>
 
       {/* ═══ STEPS (light) ═══════════════════════════════════════ */}
-      <section style={{ background: L.bg, padding: "7rem 0 6rem" }}>
+      <section style={{ background: L.bg, padding: "7rem 0 6rem", borderTop: `1px solid ${L.border}` }}>
         <div style={W}>
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "3.5rem" }}>
             <div>
@@ -114,7 +108,7 @@ export default function Home() {
           <div style={{
             background: L.white, borderRadius: 14,
             border: `1px solid ${L.border}`,
-            boxShadow: "0 2px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+            boxShadow: "0 4px 40px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.05)",
             overflow: "hidden",
           }}>
             {steps.map((s, i) => (
@@ -155,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STATS (white) ═══════════════════════════════════════ */}
+      {/* ═══ STATS ═══════════════════════════════════════════════ */}
       <section style={{
         background: L.white,
         borderTop: `1px solid ${L.border}`,
@@ -163,10 +157,10 @@ export default function Home() {
       }}>
         <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
           {[
-            { n: "4",       label: "Research Programs",  sub: "IFP · MedWorX · Anatomy U · CLIP" },
-            { n: "$1,500+", label: "Semester Stipend",   sub: "Applied to student account"        },
-            { n: "<14 hrs", label: "Weekly Commitment",  sub: "5–14 hrs depending on project"     },
-            { n: "3",       label: "Eligible Programs",  sub: "MDI · ST · MOT priority"           },
+            { n: "4",        label: "Research Programs",     sub: "IFP · MedWorX · Anatomy U · CLIP" },
+            { n: "~$1,000",  label: "Est. Semester Stipend", sub: "Scholarship to student account"    },
+            { n: "<14 hrs",  label: "Weekly Commitment",     sub: "5–14 hrs depending on project"     },
+            { n: "3",        label: "Eligible Programs",     sub: "MDI · ST · MOT priority"           },
           ].map((s, i) => (
             <div key={s.label} style={{
               padding: "2.25rem 2rem",
@@ -182,20 +176,21 @@ export default function Home() {
               }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: "0.72rem", color: "#b8b8c4" }}>{s.sub}</div>
+              <div style={{ fontSize: "0.72rem", color: L.textMuted }}>{s.sub}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ═══ VISA NOTICE (light) ═════════════════════════════════ */}
-      <section style={{ background: L.bg, padding: "6rem 0 8rem" }}>
+      {/* ═══ VISA NOTICE ═════════════════════════════════════════ */}
+      <section style={{ background: L.bg, padding: "6rem 0 8rem", borderTop: `1px solid ${L.border}` }}>
         <div style={W}>
           <div style={{
             borderRadius: 14,
-            background: "linear-gradient(160deg, #fffafa 0%, #fff7f7 100%)",
-            border: "1px solid rgba(168,0,36,0.13)",
-            boxShadow: "0 2px 20px rgba(168,0,36,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+            background: L.white,
+            border: "1px solid rgba(168,0,36,0.15)",
+            borderLeft: "3px solid rgba(168,0,36,0.5)",
+            boxShadow: "0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)",
             display: "grid", gridTemplateColumns: "1fr 1fr",
             gap: "5rem", alignItems: "center",
             padding: "3.5rem 4rem",
