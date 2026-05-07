@@ -263,11 +263,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STATS ═══════════════════════════════════════════════ */}
+      {/* ═══ STATS — pure dark for maximum editorial contrast ════ */}
       <section style={{
-        background: L.white,
-        borderTop: `1px solid ${L.border}`,
-        borderBottom: `1px solid ${L.border}`,
+        background: "#060608",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
       }}>
         <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
           {[
@@ -277,69 +277,73 @@ export default function Home() {
             { n: "3",        label: "Eligible Programs",     sub: "MDI · ST · MOT priority"           },
           ].map((s, i) => (
             <div key={s.label} style={{
-              padding: "2.25rem 2rem",
-              borderRight: i < 3 ? `1px solid ${L.border}` : "none",
+              padding: "2.75rem 2rem",
+              borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
               position: "relative",
             }}>
               <div style={{
                 position: "absolute", top: 0, left: "2rem",
-                width: "40px", height: "2px",
-                background: "linear-gradient(to right, rgba(168,0,36,0.6), transparent)",
+                width: "44px", height: "2px",
+                background: "linear-gradient(to right, rgba(168,0,36,0.75), transparent)",
               }}/>
-              <div style={{ ...mG, fontSize: "2rem", fontWeight: 600, letterSpacing: "-0.04em", marginBottom: "5px" }}>
+              <div style={{ ...mG, fontSize: "2.6rem", fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, marginBottom: "8px" }}>
                 {s.n}
               </div>
               <div style={{
-                fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
-                letterSpacing: "0.1em", textTransform: "uppercase",
-                color: L.textMuted, marginBottom: "3px",
+                fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
+                letterSpacing: "0.11em", textTransform: "uppercase",
+                color: "#505062", marginBottom: "4px",
               }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: "0.72rem", color: L.textMuted }}>{s.sub}</div>
+              <div style={{ fontSize: "0.71rem", color: "#38383e" }}>{s.sub}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ═══ VISA NOTICE ═════════════════════════════════════════ */}
-      <section style={{ background: L.bg, padding: "6rem 0 8rem", borderTop: `1px solid ${L.border}` }}>
+      {/* ═══ VISA NOTICE — pure white, hard contrast break from dark ═ */}
+      <section style={{ background: "#ffffff", padding: "8rem 0 10rem" }}>
         <div style={W}>
+          {/* Section label */}
           <div style={{
-            borderRadius: 14,
-            background: L.white,
-            border: "1px solid rgba(168,0,36,0.15)",
-            borderLeft: "3px solid rgba(168,0,36,0.5)",
-            boxShadow: "0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)",
-            display: "grid", gridTemplateColumns: "1fr 1fr",
-            gap: "5rem", alignItems: "center",
-            padding: "3.5rem 4rem",
+            display: "flex", alignItems: "center", gap: "1rem",
+            marginBottom: "3.5rem",
           }}>
+            <div style={{ width: 28, height: "1px", background: L.maroon }}/>
+            <p style={{
+              fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
+              letterSpacing: "0.14em", textTransform: "uppercase",
+              color: L.maroon, margin: 0,
+            }}>
+              Visa Eligibility
+            </p>
+          </div>
+
+          <div style={{
+            display: "grid", gridTemplateColumns: "1fr 1fr",
+            gap: "6rem", alignItems: "start",
+          }}>
+            {/* Left — editorial text */}
             <div>
-              <p style={{
-                fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
-                letterSpacing: "0.12em", textTransform: "uppercase",
-                color: L.maroon, marginBottom: "0.75rem",
-              }}>
-                Important
-              </p>
               <h3 style={{
-                fontSize: "clamp(1.4rem, 2.5vw, 1.7rem)", fontWeight: 600,
-                color: L.text, letterSpacing: "-0.025em", lineHeight: 1.2,
-                marginBottom: "1.1rem",
+                fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 600,
+                color: L.text, letterSpacing: "-0.03em", lineHeight: 1.15,
+                marginBottom: "1.4rem",
               }}>
-                International Student<br />Visa Notice
+                International student<br />visa notice.
               </h3>
-              <p style={{ fontSize: "0.875rem", color: L.textSub, lineHeight: 1.85, marginBottom: "1.4rem" }}>
+              <p style={{ fontSize: "0.9rem", color: L.textSub, lineHeight: 1.88, marginBottom: "1.8rem" }}>
                 Students on certain temporary visas may only volunteer where others do not receive
                 compensation for the same services.{" "}
                 <strong style={{ color: L.text, fontWeight: 500 }}>
                   Students with a pending H-1B application at UMN cannot serve as volunteers.
                 </strong>{" "}
-                J-1 professors, research scholars, and short-term scholars are permitted.
+                J-1 professors, research scholars, and short-term scholars are permitted to participate.
               </p>
               <Link href="/resources#visa" style={{
-                fontSize: "0.83rem", color: L.maroon,
+                display: "inline-flex", alignItems: "center", gap: 6,
+                fontSize: "0.84rem", color: L.maroon,
                 textDecoration: "underline", textUnderlineOffset: "4px",
                 fontWeight: 500,
               }}>
@@ -347,23 +351,48 @@ export default function Home() {
               </Link>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+            {/* Right — data table */}
+            <div style={{
+              border: `1px solid ${L.border}`,
+              borderRadius: 12, overflow: "hidden",
+              boxShadow: "0 2px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03)",
+            }}>
+              {/* Table header */}
+              <div style={{
+                display: "flex", justifyContent: "space-between",
+                padding: "12px 20px",
+                background: "#f8f8fa",
+                borderBottom: `1px solid ${L.border}`,
+              }}>
+                <span style={{
+                  fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",
+                  letterSpacing: "0.11em", textTransform: "uppercase", color: L.textMuted,
+                }}>Visa Type</span>
+                <span style={{
+                  fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",
+                  letterSpacing: "0.11em", textTransform: "uppercase", color: L.textMuted,
+                }}>Status</span>
+              </div>
               {[
-                { label: "F-1 Student Visa",         status: "Eligible",                 ok: true  },
-                { label: "J-1 Research Scholar",     status: "Eligible",                 ok: true  },
-                { label: "J-1 Professor",            status: "Eligible",                 ok: true  },
-                { label: "J-1 Short-Term Scholar",   status: "Eligible",                 ok: true  },
-                { label: "Pending H-1B at UMN",      status: "Not eligible as volunteer", ok: false },
-              ].map(r => (
+                { label: "F-1 Student Visa",         status: "Eligible",      ok: true  },
+                { label: "J-1 Research Scholar",     status: "Eligible",      ok: true  },
+                { label: "J-1 Professor",            status: "Eligible",      ok: true  },
+                { label: "J-1 Short-Term Scholar",   status: "Eligible",      ok: true  },
+                { label: "Pending H-1B at UMN",      status: "Not eligible",  ok: false },
+              ].map((r, i) => (
                 <div key={r.label} style={{
                   display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "0.8rem 1.1rem",
-                  background: L.white,
-                  borderRadius: 8,
-                  border: `1px solid ${r.ok ? L.borderSubtle : "rgba(168,0,36,0.15)"}`,
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                  padding: "0.9rem 1.25rem",
+                  borderBottom: i < 4 ? `1px solid ${L.borderSubtle}` : "none",
+                  background: r.ok ? "transparent" : "rgba(168,0,36,0.025)",
                 }}>
-                  <span style={{ fontSize: "0.84rem", color: L.textSub }}>{r.label}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{
+                      width: 5, height: 5, borderRadius: "50%",
+                      background: r.ok ? "#2e7d3e" : L.maroon, flexShrink: 0,
+                    }}/>
+                    <span style={{ fontSize: "0.85rem", color: L.textSub }}>{r.label}</span>
+                  </div>
                   <span style={{
                     fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",
                     letterSpacing: "0.08em", textTransform: "uppercase",

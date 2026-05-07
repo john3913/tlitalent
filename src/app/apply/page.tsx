@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import ApplyCanvas from "@/components/ApplyCanvas";
 
 const programs = [
   { id: "ifp",  label: "Innovation Fellows Program (IFP)"          },
@@ -162,56 +163,62 @@ export default function Apply() {
   return (
     <div style={{ background: L.bg, minHeight: "100vh" }}>
 
-      {/* ── Header ─────────────────────────────────────────────── */}
+      {/* ── Header — dark with pipeline canvas ─────────────────── */}
       <section style={{
-        background: "#ffffff",
-        borderBottom: `1px solid ${L.border}`,
-        padding: "5rem 0 4.5rem",
-        backgroundImage: "radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px)",
-        backgroundSize: "28px 28px",
+        position: "relative", overflow: "hidden",
+        background: "#06091e",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        padding: "7rem 0 6rem",
       }}>
-        <div style={{ maxWidth: 1360, margin: "0 auto", padding: "0 4rem" }}>
+        <ApplyCanvas />
+        {/* Top accent bar */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+          background: "linear-gradient(to right, transparent 5%, rgba(168,0,36,0.55) 28%, rgba(220,80,110,0.72) 50%, rgba(168,0,36,0.55) 72%, transparent 95%)",
+        }}/>
+        <div style={{ maxWidth: 1360, margin: "0 auto", padding: "0 4rem", position: "relative", zIndex: 1 }}>
           <p style={{
             fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
-            letterSpacing: "0.12em", textTransform: "uppercase",
-            color: L.muted, marginBottom: "1.4rem",
+            letterSpacing: "0.13em", textTransform: "uppercase",
+            color: "rgba(255,255,255,0.28)", marginBottom: "1.5rem",
           }}>
             TLI &times; BMDC &nbsp;&bull;&nbsp; Interest Form
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "end" }}>
-            <div>
-              <h1 style={{
-                fontSize: "clamp(2.6rem, 4vw, 3.6rem)",
-                fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1.07,
-                color: L.text, margin: "0 0 1.5rem",
-              }}>
-                Apply for a{" "}
-                <span style={mG}>TLI&nbsp;BMDC</span><br />
-                Internship
-              </h1>
-              {/* Quick stats */}
-              <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-                {[
-                  { n: "4 Programs", sub: "IFP · MedWorX · ANU · CLIP" },
-                  { n: "~$1,000",    sub: "Est. semester stipend"        },
-                  { n: "<14 hrs",    sub: "Per week"                    },
-                ].map(s => (
-                  <div key={s.n} style={{
-                    padding: "5px 12px", borderRadius: 6,
-                    background: L.white, border: `1px solid ${L.border}`,
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-                  }}>
-                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: L.maroon }}>{s.n}</span>
-                    <span style={{ fontSize: "0.68rem", color: L.muted, marginLeft: 6 }}>{s.sub}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p style={{ fontSize: "0.95rem", color: L.sub, lineHeight: 1.82, margin: 0 }}>
+          <div style={{ maxWidth: 640 }}>
+            <h1 style={{
+              fontSize: "clamp(2.6rem, 4vw, 3.7rem)",
+              fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1.07,
+              color: "#ffffff", margin: "0 0 1.2rem",
+            }}>
+              Apply for a{" "}
+              <span style={{
+                background: "linear-gradient(130deg, #e8003a 0%, #a80024 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              }}>TLI&nbsp;BMDC</span><br />
+              Internship
+            </h1>
+            <p style={{ fontSize: "0.95rem", color: "#9090a2", lineHeight: 1.82, marginBottom: "2rem" }}>
               Complete this form to express interest in a BMDC research opportunity.
               Your TLI Fellow must have recommended you before submitting — BMDC staff
               will match you to a project team based on your skills, interests, and availability.
             </p>
+            {/* Stats chips — glass dark */}
+            <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+              {[
+                { n: "4 Programs", sub: "IFP · MedWorX · ANU · CLIP" },
+                { n: "~$1,000",    sub: "Est. semester stipend"        },
+                { n: "<14 hrs",    sub: "Per week"                    },
+              ].map(s => (
+                <div key={s.n} style={{
+                  padding: "5px 13px", borderRadius: 6,
+                  background: "rgba(255,255,255,0.055)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                }}>
+                  <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#ff7090" }}>{s.n}</span>
+                  <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.38)", marginLeft: 7 }}>{s.sub}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
