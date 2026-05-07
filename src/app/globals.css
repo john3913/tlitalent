@@ -2,15 +2,15 @@
 
 /* ── Design tokens ──────────────────────────────────────────── */
 :root {
-  --bg:        #111114;
-  --bg-2:      #17171b;
-  --bg-3:      #1e1e23;
-  --surface:   #1c1c21;
-  --border:    rgba(255,255,255,0.08);
-  --border-2:  rgba(255,255,255,0.05);
-  --text:      #ffffff;
-  --text-2:    #a8a8b2;
-  --text-3:    #606068;
+  --bg:        #13131a;
+  --bg-2:      #1a1a24;
+  --bg-3:      #21212e;
+  --surface:   #1e1e2a;
+  --border:    rgba(255,255,255,0.09);
+  --border-2:  rgba(255,255,255,0.055);
+  --text:      #f0f0f8;
+  --text-2:    #9898a8;
+  --text-3:    #545462;
   --maroon:    #a80024;
   --maroon-2:  #cc0030;
   --maroon-3:  #e0003a;
