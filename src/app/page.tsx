@@ -4,7 +4,7 @@ import HeroCanvas from "@/components/HeroCanvas";
 const stats = [
   { value: "4", label: "Active Programs" },
   { value: "$1,500+", label: "Semester Stipend" },
-  { value: "5–14", label: "Hours / Week" },
+  { value: "5–14 hrs", label: "Per Week" },
   { value: "MDI · ST · MOT", label: "Eligible Programs" },
 ];
 
@@ -43,29 +43,30 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[88vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050a12] via-[#080e1c] to-[#050a12]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_40%,rgba(122,0,25,0.12),transparent)]" />
+      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
         <HeroCanvas />
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-24">
-          <div className="max-w-3xl">
-            <p className="label mb-5 text-[#7a0019]">TLI &times; BMDC Partnership &bull; University of Minnesota</p>
-            <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight tracking-tight mb-6 animate-fade-up">
-              Research Internships<br />
-              <span className="text-[#a8001f]">for International</span><br />
-              Grad Students
+
+        {/* Bottom fade to body bg */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0e0e10] to-transparent pointer-events-none z-10" />
+
+        <div className="relative z-20 max-w-6xl mx-auto px-8 py-28 w-full">
+          <div className="max-w-2xl">
+            <p className="label mb-6 fade-up">TLI &times; BMDC &nbsp;&bull;&nbsp; University of Minnesota</p>
+            <h1 className="text-[3.25rem] sm:text-[4rem] font-semibold text-white leading-[1.08] tracking-[-0.03em] mb-7 fade-up-2">
+              Research internships<br />
+              for international<br />
+              <span style={{ color: "#c0003a" }}>grad students.</span>
             </h1>
-            <p className="text-lg text-slate-400 max-w-2xl mb-10 leading-relaxed animate-fade-up-2">
-              The Technological Leadership Institute connects UMN graduate students
-              with paid research opportunities at the Bakken Medical Devices Center —
-              building prototypes, working with clinicians, and gaining real-world
-              medical innovation experience.
+            <p className="text-[1.05rem] text-[#a1a1a6] max-w-xl mb-10 leading-relaxed fade-up-3" style={{ fontWeight: 400 }}>
+              The Technological Leadership Institute places UMN graduate students
+              inside Bakken Medical Devices Center research teams — with stipends,
+              mentorship, and real clinical problems to solve.
             </p>
-            <div className="flex flex-wrap gap-4 animate-fade-up-3">
-              <Link href="/apply" className="btn-primary text-base px-8 py-3">
+            <div className="flex flex-wrap gap-3 fade-up-4">
+              <Link href="/apply" className="btn-primary px-7 py-2.5 text-[15px]">
                 Apply Now
               </Link>
-              <Link href="/opportunities" className="btn-outline text-base px-8 py-3">
+              <Link href="/opportunities" className="btn-outline px-7 py-2.5 text-[15px]">
                 Browse Projects
               </Link>
             </div>
@@ -73,88 +74,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats bar */}
-      <section className="border-y border-[#1e2d3d] bg-[#0d1117]">
-        <div className="max-w-6xl mx-auto px-6 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6">
+      {/* Stats */}
+      <section className="border-y border-[#222226] bg-[#141416]">
+        <div className="max-w-6xl mx-auto px-8 py-7 grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#222226]">
           {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="text-2xl font-bold text-white mb-1">{s.value}</div>
+            <div key={s.label} className="text-center px-6 first:pl-0 last:pr-0">
+              <div className="text-[1.6rem] font-semibold text-white tracking-tight mb-0.5">{s.value}</div>
               <div className="label">{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Programs preview */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
+      {/* Programs */}
+      <section className="max-w-6xl mx-auto px-8 py-24">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="label mb-2">Available programs</p>
-            <h2 className="text-3xl font-bold text-white">BMDC Research Teams</h2>
+            <p className="label mb-3">Available programs</p>
+            <h2 className="text-[2rem] font-semibold text-white tracking-tight">BMDC Research Teams</h2>
           </div>
-          <Link href="/opportunities" className="btn-outline text-sm">
+          <Link href="/opportunities" className="btn-outline text-[13px] !py-1.5 !px-4">
             View all
           </Link>
         </div>
-        <div className="grid sm:grid-cols-2 gap-5">
+        <div className="grid sm:grid-cols-2 gap-3">
           {programs.map((p) => (
-            <Link key={p.id} href={`/opportunities#${p.id}`} className="card card-hover p-6 block">
-              <div className="flex items-start justify-between mb-3">
-                <span className="label text-[#a8001f] border border-[#7a0019]/40 px-2 py-0.5 rounded">
-                  {p.tag}
-                </span>
-                <span className="text-xs text-slate-500">{p.lead}</span>
+            <Link key={p.id} href={`/opportunities#${p.id}`} className="card card-hover p-7 block group">
+              <div className="flex items-center justify-between mb-4">
+                <span className="label" style={{ color: "#c0003a" }}>{p.tag}</span>
+                <span className="text-xs text-[#6e6e73]">{p.lead}</span>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">{p.name}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{p.desc}</p>
+              <h3 className="text-[1rem] font-medium text-white mb-2 tracking-tight">{p.name}</h3>
+              <p className="text-[0.875rem] text-[#a1a1a6] leading-relaxed">{p.desc}</p>
             </Link>
           ))}
         </div>
       </section>
 
       {/* Process teaser */}
-      <section className="border-t border-[#1e2d3d] bg-[#0d1117]">
-        <div className="max-w-6xl mx-auto px-6 py-20">
-          <p className="label mb-2">How it works</p>
-          <h2 className="text-3xl font-bold text-white mb-10">5 Steps to Your BMDC Internship</h2>
-          <div className="flex flex-col sm:flex-row gap-4">
+      <section className="border-t border-[#222226] bg-[#141416]">
+        <div className="max-w-6xl mx-auto px-8 py-24">
+          <p className="label mb-3">How it works</p>
+          <h2 className="text-[2rem] font-semibold text-white tracking-tight mb-12">Six steps from interest to first day.</h2>
+          <div className="grid sm:grid-cols-3 gap-3">
             {[
-              "TLI Fellow recommends you",
-              "Submit interest form & resume",
-              "BMDC reviews & matches you",
-              "Sign your agreement",
-              "Start your project",
-            ].map((step, i) => (
-              <div key={i} className="flex-1 card p-5">
-                <div className="text-[#7a0019] font-bold text-2xl mb-2 font-mono">{String(i + 1).padStart(2, "0")}</div>
-                <p className="text-sm text-slate-300 leading-snug">{step}</p>
+              ["01", "TLI Fellow recommends you"],
+              ["02", "Submit interest form & resume"],
+              ["03", "BMDC reviews & matches"],
+              ["04", "Meet the project team"],
+              ["05", "Sign your agreement"],
+              ["06", "Start your project"],
+            ].map(([n, step]) => (
+              <div key={n} className="card p-6">
+                <div className="text-[0.75rem] font-mono text-[#6e6e73] mb-3">{n}</div>
+                <p className="text-[0.9rem] text-[#f5f5f7] leading-snug">{step}</p>
               </div>
             ))}
           </div>
           <div className="mt-8">
-            <Link href="/process" className="btn-outline">
-              Full Process Details
+            <Link href="/process" className="btn-outline text-[13px]">
+              Full process guide
             </Link>
           </div>
         </div>
       </section>
 
       {/* Visa notice */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="card border-[#7a0019]/30 bg-[#7a0019]/5 p-8 flex flex-col sm:flex-row gap-6 items-start">
-          <div className="w-10 h-10 rounded-lg bg-[#7a0019]/20 border border-[#7a0019]/30 flex items-center justify-center flex-shrink-0">
-            <span className="text-[#ff4455] text-lg">!</span>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold text-lg mb-2">International Student Visa Notice</h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-3">
-              Students on certain temporary visas may volunteer only in positions where others do not receive compensation for the same services.
-              <strong className="text-slate-300"> Students with a pending H-1B visa application to work at UMN CANNOT serve as volunteers.</strong> J-1 professors, research scholars, and short-term scholars are permitted.
-            </p>
-            <Link href="/resources#visa" className="text-sm text-[#ff6677] hover:text-[#ff8888] underline underline-offset-4">
-              Full visa eligibility guide →
-            </Link>
-          </div>
+      <section className="max-w-6xl mx-auto px-8 py-20">
+        <div className="rounded-2xl border border-[#2a2a2e] bg-[#141416] p-8 sm:p-10">
+          <p className="label mb-3" style={{ color: "#c0003a" }}>Important</p>
+          <h3 className="text-[1.2rem] font-medium text-white mb-3 tracking-tight">International Student Visa Notice</h3>
+          <p className="text-[0.9rem] text-[#a1a1a6] leading-relaxed max-w-2xl mb-4">
+            Students on certain temporary visas may only volunteer in positions where others do not receive compensation for the same services.
+            {" "}<span className="text-[#f5f5f7]">Students with a pending H-1B application at UMN cannot serve as volunteers.</span>
+            {" "}J-1 professors, research scholars, and short-term scholars are permitted.
+          </p>
+          <Link href="/resources#visa" className="text-[0.875rem] text-[#c0003a] hover:text-[#e0003a] underline underline-offset-4 transition-colors">
+            Full visa eligibility guide →
+          </Link>
         </div>
       </section>
     </div>
