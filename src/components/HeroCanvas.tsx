@@ -189,5 +189,14 @@ export default function HeroCanvas() {
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
   }, []);
 
-  return <canvas ref={ref} className="absolute inset-0 w-full h-full" />;
+  return (
+    <canvas
+      ref={ref}
+      style={{
+        position: "absolute", top: 0, left: 0,
+        width: "100%", height: "100%", zIndex: 0,
+        display: "block",
+      }}
+    />
+  );
 }

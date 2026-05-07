@@ -54,7 +54,7 @@ export default function Home() {
     <div>
 
       {/* ═══ HERO (dark) ═════════════════════════════════════════ */}
-      <section style={{ position: "relative", overflow: "hidden", minHeight: "92vh", display: "flex", alignItems: "center" }}>
+      <section style={{ position: "relative", overflow: "hidden", minHeight: "92vh", display: "flex", alignItems: "center", background: "#0c0c11" }}>
         <HeroCanvas />
 
         <div style={{ ...W, position: "relative", zIndex: 20, width: "100%", padding: "8rem 4rem" }}>
