@@ -80,22 +80,44 @@ function Hint({ children }: { children: React.ReactNode }) {
   return <p style={{ fontSize: "0.72rem", color: L.muted, marginTop: 5 }}>{children}</p>;
 }
 
-function Card({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
+function Card({ title, sub, step, children }: { title: string; sub?: string; step?: string; children: React.ReactNode }) {
   return (
     <div style={{
       background: L.white,
       border: `1px solid ${L.border}`,
-      borderRadius: 14,
-      padding: "28px 32px",
-      boxShadow: "0 2px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04)",
+      borderRadius: 16,
+      overflow: "hidden",
+      boxShadow: "0 2px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04)",
     }}>
-      <div style={{ borderBottom: `1px solid ${L.soft}`, paddingBottom: 16, marginBottom: 22 }}>
-        <h2 style={{ fontSize: "0.92rem", fontWeight: 600, color: L.text, letterSpacing: "-0.01em", margin: 0 }}>
-          {title}
-        </h2>
-        {sub && <p style={{ fontSize: "0.78rem", color: L.muted, marginTop: 4, lineHeight: 1.55 }}>{sub}</p>}
+      <div style={{
+        padding: "20px 32px 18px",
+        borderBottom: `1px solid ${L.soft}`,
+        background: "linear-gradient(to bottom, #fafafa, #ffffff)",
+        display: "flex", alignItems: "flex-start", gap: "0.9rem",
+      }}>
+        {step && (
+          <span style={{
+            fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",
+            fontWeight: 700, letterSpacing: "0.08em",
+            color: L.maroon,
+            background: "rgba(168,0,36,0.07)",
+            border: "1px solid rgba(168,0,36,0.16)",
+            padding: "3px 8px", borderRadius: 4,
+            flexShrink: 0, marginTop: 2,
+          }}>
+            {step}
+          </span>
+        )}
+        <div>
+          <h2 style={{ fontSize: "0.95rem", fontWeight: 600, color: L.text, letterSpacing: "-0.01em", margin: 0 }}>
+            {title}
+          </h2>
+          {sub && <p style={{ fontSize: "0.78rem", color: L.muted, marginTop: 4, lineHeight: 1.55, margin: "5px 0 0" }}>{sub}</p>}
+        </div>
       </div>
-      {children}
+      <div style={{ padding: "26px 32px" }}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -142,9 +164,11 @@ export default function Apply() {
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <section style={{
-        background: "linear-gradient(to bottom, #ffffff, #f2f2f5)",
+        background: "#ffffff",
         borderBottom: `1px solid ${L.border}`,
         padding: "5rem 0 4.5rem",
+        backgroundImage: "radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
       }}>
         <div style={{ maxWidth: 1360, margin: "0 auto", padding: "0 4rem" }}>
           <p style={{
@@ -202,7 +226,7 @@ export default function Apply() {
             style={{ display: "flex", flexDirection: "column", gap: "12px" }}
           >
             {/* Personal */}
-            <Card title="Personal Information">
+            <Card title="Personal Information" step="01">
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "18px" }}>
                 <div>
                   <Label>Full Name *</Label>
@@ -251,7 +275,7 @@ export default function Apply() {
             </Card>
 
             {/* Program */}
-            <Card title="Program & Availability">
+            <Card title="Program & Availability" step="02">
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div>
                   <Label>Preferred Program *</Label>
@@ -289,6 +313,7 @@ export default function Apply() {
             <Card
               title="Your Five Things Pitch"
               sub="BMDC project leads use this as the primary signal to evaluate fit. Name specific tools, techniques, clinical environments, and skills — vague answers reduce your chance of a match."
+              step="03"
             >
               <div>
                 <Label>What five things will you bring to the BMDC? *</Label>
@@ -307,7 +332,7 @@ export default function Apply() {
             </Card>
 
             {/* Goals */}
-            <Card title="Goals & Background">
+            <Card title="Goals & Background" step="04">
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div>
                   <Label>What do you hope to gain?</Label>
@@ -373,24 +398,26 @@ export default function Apply() {
               boxShadow: "0 4px 24px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.05)",
             }}>
               <div style={{
-                padding: "20px 24px",
+                padding: "24px 24px 20px",
                 background: "linear-gradient(135deg, #7a0019 0%, #c4002e 100%)",
+                backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)",
+                backgroundSize: "20px 20px",
               }}>
                 <p style={{
-                  fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",
-                  letterSpacing: "0.12em", textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.55)", marginBottom: 8,
+                  fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",
+                  letterSpacing: "0.14em", textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.45)", marginBottom: 10,
                 }}>
-                  Semester Stipend
+                  Est. Semester Stipend
                 </p>
                 <div style={{
-                  fontSize: "2.4rem", fontWeight: 600, letterSpacing: "-0.04em",
-                  color: "#ffffff", lineHeight: 1, marginBottom: 6,
+                  fontSize: "2.6rem", fontWeight: 700, letterSpacing: "-0.04em",
+                  color: "#ffffff", lineHeight: 1, marginBottom: 8,
                 }}>
                   ~$1,000
                 </div>
-                <p style={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.62)", lineHeight: 1.6 }}>
-                  Estimated scholarship applied to your student account in the first week of your appointment.
+                <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.65 }}>
+                  Estimated scholarship applied to your UMN student account in the first week of your appointment.
                 </p>
               </div>
               <div style={{ padding: "16px 24px", borderTop: `1px solid ${L.border}` }}>

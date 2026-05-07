@@ -98,74 +98,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STEPS — dark Palantir pipeline ══════════════════════ */}
+      {/* ═══ STEPS — dark navy, Apple/Palantir ══════════════════════ */}
       <section style={{
-        background: "#0b0b10",
+        position: "relative", overflow: "hidden",
+        background: "linear-gradient(160deg, #0d1022 0%, #090a12 100%)",
         borderTop: "1px solid rgba(255,255,255,0.07)",
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
-        <div style={W}>
+        {/* Ambient glow — visually separates from hero */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: "60%",
+          background: "radial-gradient(ellipse 80% 100% at 50% -10%, rgba(168,0,36,0.12) 0%, transparent 100%)",
+          pointerEvents: "none",
+        }}/>
 
-          {/* Header row */}
+        <div style={{ ...W, position: "relative" }}>
+
+          {/* Section header */}
           <div style={{
-            display: "grid", gridTemplateColumns: "1fr auto 1fr",
-            alignItems: "center", gap: "2rem",
-            padding: "4.5rem 0 3.5rem",
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            gap: "3rem", padding: "5.5rem 0 4rem",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}>
             <div>
               <p style={{
                 fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
-                letterSpacing: "0.12em", textTransform: "uppercase",
-                color: "#404050", marginBottom: "0.6rem",
+                letterSpacing: "0.14em", textTransform: "uppercase",
+                color: "#40405a", marginBottom: "0.85rem",
               }}>
                 How it works
               </p>
               <h2 style={{
-                fontSize: "clamp(1.9rem, 3vw, 2.5rem)", fontWeight: 600,
-                letterSpacing: "-0.038em", color: "#ffffff", margin: 0,
+                fontSize: "clamp(2.2rem, 3.5vw, 3rem)", fontWeight: 600,
+                letterSpacing: "-0.04em", color: "#ffffff",
+                lineHeight: 1.1, margin: 0,
               }}>
-                From interest to first day.
+                From interest<br />to first day.
               </h2>
             </div>
 
-            {/* Node pipeline visualization */}
+            {/* Pipeline node visualization */}
             <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
               {steps.map((s, i) => (
                 <div key={s.n} style={{ display: "flex", alignItems: "center" }}>
-                  <div style={{
-                    width: 38, height: 38, borderRadius: "50%",
-                    border: "1px solid rgba(192,0,46,0.35)",
-                    background: "rgba(192,0,46,0.07)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    flexShrink: 0, position: "relative",
-                  }}>
-                    {/* Subtle pulse ring */}
+                  <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: 56, height: 56 }}>
+                    {/* Outer ring */}
                     <div style={{
-                      position: "absolute", inset: -5,
-                      borderRadius: "50%", border: "1px solid rgba(192,0,46,0.1)",
+                      position: "absolute", inset: 0, borderRadius: "50%",
+                      border: "1px solid rgba(168,0,36,0.2)",
                     }}/>
-                    <span style={{
-                      ...mG,
-                      fontFamily: "ui-monospace,monospace",
-                      fontSize: "0.6rem", letterSpacing: "0.04em",
+                    {/* Node */}
+                    <div style={{
+                      width: 38, height: 38, borderRadius: "50%",
+                      background: "linear-gradient(135deg, rgba(192,0,46,0.18) 0%, rgba(100,0,24,0.1) 100%)",
+                      border: "1px solid rgba(192,0,46,0.5)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      boxShadow: "0 0 16px rgba(192,0,46,0.2), inset 0 1px 0 rgba(255,255,255,0.06)",
                     }}>
-                      {s.n}
-                    </span>
+                      <span style={{
+                        ...mG, fontFamily: "ui-monospace,monospace",
+                        fontSize: "0.58rem", letterSpacing: "0.04em",
+                      }}>
+                        {s.n}
+                      </span>
+                    </div>
                   </div>
                   {i < steps.length - 1 && (
                     <div style={{
-                      width: 32, height: 1, flexShrink: 0,
-                      background: "linear-gradient(to right, rgba(192,0,46,0.35), rgba(192,0,46,0.12))",
+                      width: 28, height: 1, flexShrink: 0,
+                      background: "linear-gradient(to right, rgba(168,0,36,0.45), rgba(168,0,36,0.12))",
                     }}/>
                   )}
                 </div>
               ))}
             </div>
 
-            <div style={{ textAlign: "right" }}>
-              <Link href="/process" className="btn-outline" style={{ fontSize: "13px", padding: "8px 18px" }}>
-                Full guide →
+            <div style={{ display: "flex", justifyContent: "flex-end", flexShrink: 0 }}>
+              <Link href="/process" className="btn-outline" style={{ fontSize: "13px", padding: "9px 22px" }}>
+                Full process guide →
               </Link>
             </div>
           </div>
@@ -173,68 +183,68 @@ export default function Home() {
           {/* 2 × 3 step grid */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
             {steps.map((s, i) => (
-              <div key={s.n} style={{
-                padding: "3rem 3.5rem",
-                borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.055)" : "none",
-                borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.055)" : "none",
+              <Link key={s.n} href="/process" style={{
+                display: "block", textDecoration: "none",
+                padding: "3.5rem",
+                borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 position: "relative", overflow: "hidden",
-                transition: "background 0.18s",
-                cursor: "default",
+                transition: "background 0.2s",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(192,0,46,0.025)")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.045)")}
                 onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
               >
-                {/* Watermark step number */}
+                {/* Ghost watermark */}
                 <div style={{
-                  position: "absolute", top: "-0.5rem", right: "1.25rem",
-                  fontSize: "7.5rem", fontWeight: 800,
+                  position: "absolute", top: "-1rem", right: "1rem",
+                  fontSize: "8rem", fontWeight: 800,
                   fontFamily: "ui-monospace,monospace",
-                  color: "rgba(168,0,36,0.065)", lineHeight: 1,
+                  color: "rgba(168,0,36,0.08)", lineHeight: 1,
                   pointerEvents: "none", userSelect: "none",
-                  letterSpacing: "-0.05em",
+                  letterSpacing: "-0.06em",
                 }}>
                   {s.n}
                 </div>
 
-                {/* Step + Who row */}
+                {/* Header row: step label + WHO pill */}
                 <div style={{
-                  display: "inline-flex", alignItems: "center", gap: "0.6rem",
-                  marginBottom: "1.4rem",
-                  padding: "4px 10px 4px 0",
+                  display: "flex", alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "1.6rem",
                 }}>
                   <span style={{
-                    ...mG,
-                    fontFamily: "ui-monospace,monospace",
-                    fontSize: "0.62rem", letterSpacing: "0.1em",
-                    fontWeight: 600,
+                    ...mG, fontFamily: "ui-monospace,monospace",
+                    fontSize: "0.62rem", letterSpacing: "0.12em", fontWeight: 700,
                   }}>
                     STEP {s.n}
                   </span>
-                  <span style={{ width: 1, height: 10, background: "rgba(255,255,255,0.1)", display: "inline-block" }}/>
                   <span style={{
-                    fontFamily: "ui-monospace,monospace", fontSize: "0.58rem",
-                    letterSpacing: "0.1em", textTransform: "uppercase",
-                    color: "#383848",
+                    fontFamily: "ui-monospace,monospace",
+                    fontSize: "0.58rem", letterSpacing: "0.08em", textTransform: "uppercase",
+                    color: "#8888a8",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.09)",
+                    padding: "3px 12px", borderRadius: "20px",
                   }}>
                     {s.who}
                   </span>
                 </div>
 
                 <h3 style={{
-                  fontSize: "1.05rem", fontWeight: 600,
-                  color: "#e0e0ec", letterSpacing: "-0.02em",
-                  lineHeight: 1.3, marginBottom: "0.85rem",
+                  fontSize: "1.1rem", fontWeight: 600,
+                  color: "#e8e8f4", letterSpacing: "-0.022em",
+                  lineHeight: 1.32, marginBottom: "0.9rem",
                 }}>
                   {s.title}
                 </h3>
 
                 <p style={{
-                  fontSize: "0.82rem", color: "#4a4a5c",
-                  lineHeight: 1.78, margin: 0,
+                  fontSize: "0.84rem", color: "#7878a0",
+                  lineHeight: 1.82, margin: 0,
                 }}>
                   {s.body}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -257,7 +267,13 @@ export default function Home() {
             <div key={s.label} style={{
               padding: "2.25rem 2rem",
               borderRight: i < 3 ? `1px solid ${L.border}` : "none",
+              position: "relative",
             }}>
+              <div style={{
+                position: "absolute", top: 0, left: "2rem",
+                width: "40px", height: "2px",
+                background: "linear-gradient(to right, rgba(168,0,36,0.6), transparent)",
+              }}/>
               <div style={{ ...mG, fontSize: "2rem", fontWeight: 600, letterSpacing: "-0.04em", marginBottom: "5px" }}>
                 {s.n}
               </div>
