@@ -270,7 +270,7 @@ export default function Home() {
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
         <StatsCanvas />
-        <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", position: "relative", zIndex: 1 }}>
+        <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", position: "relative", zIndex: 1, textAlign: "center" }}>
           {[
             { n: "~$1,000",  label: "Est. Semester Stipend", sub: "Scholarship to student account"    },
             { n: "<14 hrs",  label: "Weekly Commitment",     sub: "5–14 hrs depending on project"     },
@@ -282,9 +282,9 @@ export default function Home() {
               position: "relative",
             }}>
               <div style={{
-                position: "absolute", top: 0, left: "2rem",
+                position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",
                 width: "44px", height: "2px",
-                background: "linear-gradient(to right, rgba(168,0,36,0.75), transparent)",
+                background: "linear-gradient(to right, transparent, rgba(168,0,36,0.75), transparent)",
               }}/>
               <div style={{ ...mG, fontSize: "2.6rem", fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, marginBottom: "8px" }}>
                 {s.n}
