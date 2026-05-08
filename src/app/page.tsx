@@ -1,7 +1,10 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import HeroCanvas from "@/components/HeroCanvas";
 import StatsCanvas from "@/components/StatsCanvas";
+
+const UMN_SEARCH = "https://hr.myu.umn.edu/psc/hrprd/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?Page=HRS_APP_SCHJOB_FL&ACTION=U&FOCUS=Applicant&SiteId=5";
 
 const steps = [
   {
@@ -51,6 +54,13 @@ const mG: React.CSSProperties = {
 };
 
 export default function Home() {
+  const [query, setQuery] = useState("");
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    window.open(UMN_SEARCH, "_blank", "noopener");
+  }
+
   return (
     <div>
 
@@ -96,6 +106,68 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ═══ SEARCH ══════════════════════════════════════════════════ */}
+      <section style={{
+        background: "#ffffff",
+        borderBottom: "1px solid rgba(0,0,0,0.07)",
+        padding: "4.5rem 0",
+      }}>
+        <div style={{ ...W, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          <p style={{
+            fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
+            letterSpacing: "0.14em", textTransform: "uppercase",
+            color: L.textMuted, marginBottom: "1rem",
+          }}>
+            BMDC Positions &nbsp;&bull;&nbsp; UMN Job Portal
+          </p>
+          <h2 style={{
+            fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)", fontWeight: 600,
+            letterSpacing: "-0.03em", color: L.text,
+            lineHeight: 1.15, margin: "0 0 2rem",
+          }}>
+            Find open research positions
+          </h2>
+
+          <form onSubmit={handleSearch} style={{
+            display: "flex", gap: "10px", width: "100%", maxWidth: 600,
+          }}>
+            <input
+              type="text"
+              placeholder="Role, lab, or keyword…"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              style={{
+                flex: 1,
+                background: "#f4f5fa",
+                border: "1px solid rgba(0,0,0,0.12)",
+                borderRadius: 10,
+                padding: "13px 18px",
+                fontSize: "0.92rem",
+                color: L.text,
+                outline: "none",
+                fontFamily: "inherit",
+                transition: "border-color 0.15s, box-shadow 0.15s",
+              }}
+              onFocus={e => {
+                e.currentTarget.style.borderColor = "rgba(168,0,36,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 0 3px rgba(168,0,36,0.08)";
+              }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor = "rgba(0,0,0,0.12)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            />
+            <button type="submit" className="btn-primary" style={{ padding: "13px 28px", fontSize: "14px", flexShrink: 0 }}>
+              Search →
+            </button>
+          </form>
+
+          <p style={{ fontSize: "0.7rem", color: L.textMuted, marginTop: "0.9rem" }}>
+            Opens the UMN HR job portal in a new tab
+          </p>
         </div>
       </section>
 
