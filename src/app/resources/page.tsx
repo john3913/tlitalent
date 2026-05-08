@@ -73,7 +73,7 @@ export default function Resources() {
           Resources
         </h1>
         <p style={{ fontSize: "0.92rem", color: L.sub, lineHeight: 1.75, maxWidth: 520, margin: 0 }}>
-          Everything you need to complete your BMDC internship paperwork, understand your payment,
+          Everything you need to complete your TLI × BMDC internship paperwork, understand your payment,
           and verify your visa eligibility.
         </p>
       </div>
