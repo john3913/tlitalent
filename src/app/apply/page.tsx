@@ -507,7 +507,7 @@ export default function Apply() {
               <p style={{ fontSize: "0.76rem", color: L.sub, lineHeight: 1.7 }}>
                 Pending <strong style={{ color: L.text, fontWeight: 500 }}>H-1B applicants at UMN</strong> cannot volunteer.
                 F-1 students and J-1 scholars are permitted.{" "}
-                <Link href="/resources#visa" style={{ color: L.maroon, textDecoration: "underline", textUnderlineOffset: 3 }}>
+                <Link href="/resources" style={{ color: L.maroon, textDecoration: "underline", textUnderlineOffset: 3 }}>
                   Full guide →
                 </Link>
               </p>

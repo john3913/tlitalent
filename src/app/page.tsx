@@ -341,7 +341,7 @@ export default function Home() {
                 </strong>{" "}
                 J-1 professors, research scholars, and short-term scholars are permitted to participate.
               </p>
-              <Link href="/resources#visa" style={{
+              <Link href="/resources" style={{
                 display: "inline-flex", alignItems: "center", gap: 6,
                 fontSize: "0.84rem", color: L.maroon,
                 textDecoration: "underline", textUnderlineOffset: "4px",
