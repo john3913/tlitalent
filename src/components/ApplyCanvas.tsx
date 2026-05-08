@@ -12,16 +12,6 @@ const NODES = [
 
 const EDGES: [number, number][] = [[0,1],[1,2],[2,3],[3,4],[4,5]];
 
-/*
- * Lissajous figures: x = A·sin(a·t + δ), y = B·sin(b·t)
- * δ evolves slowly over time — the figure continuously morphs.
- */
-const FIGURES = [
-  { cx: 0.740, cy: 0.50, rx: 0.130, ry: 0.320, a: 3, b: 2, rate: 0.14, alpha: 0.058 },
-  { cx: 0.620, cy: 0.50, rx: 0.085, ry: 0.210, a: 5, b: 4, rate: 0.09, alpha: 0.040 },
-  { cx: 0.870, cy: 0.50, rx: 0.060, ry: 0.155, a: 2, b: 3, rate: 0.19, alpha: 0.048 },
-];
-
 type CP = { cp1x:number; cp1y:number; cp2x:number; cp2y:number };
 
 function catmullRomCPs(pts: {x:number;y:number}[], tension = 0.42): CP[] {
@@ -90,46 +80,62 @@ export default function ApplyCanvas() {
       const t = (performance.now() - t0) * 0.001;
       c.clearRect(0, 0, W, H);
 
-      /* ── Fine coordinate grid ───────────────────────────────── */
-      const GRID = 44;
-      c.lineWidth = 0.5;
+      /* ── Polar coordinate system — centered on pipeline midpoint ── */
+      const pcx = W * 0.735, pcy = H * 0.5;
 
-      /* Major lines every 4 cells */
-      c.strokeStyle = "rgba(255,255,255,0.038)";
-      for (let x = GRID * 4; x < W; x += GRID * 4) {
-        c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke();
-      }
-      for (let y = GRID * 4; y < H; y += GRID * 4) {
-        c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
+      /* Concentric rings */
+      const ringRadii = [0.11, 0.20, 0.31, 0.43, 0.56, 0.70].map(f => f * H);
+      ringRadii.forEach((r, i) => {
+        const alpha = i < 2 ? 0.055 : i < 4 ? 0.040 : 0.026;
+        c.strokeStyle = `rgba(180,190,255,${alpha})`;
+        c.lineWidth = 0.6;
+        c.beginPath(); c.arc(pcx, pcy, r, 0, Math.PI * 2); c.stroke();
+      });
+
+      /* Radial spokes — 16 total */
+      for (let k = 0; k < 16; k++) {
+        const angle = (k / 16) * Math.PI * 2;
+        const alpha = k % 4 === 0 ? 0.048 : 0.022;
+        c.strokeStyle = `rgba(180,190,255,${alpha})`;
+        c.lineWidth = 0.5;
+        c.beginPath();
+        c.moveTo(pcx, pcy);
+        c.lineTo(pcx + Math.cos(angle) * ringRadii[5], pcy + Math.sin(angle) * ringRadii[5]);
+        c.stroke();
       }
 
-      /* Minor lines */
-      c.strokeStyle = "rgba(255,255,255,0.016)";
-      for (let x = GRID; x < W; x += GRID) {
-        if (x % (GRID * 4) === 0) continue;
-        c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke();
-      }
-      for (let y = GRID; y < H; y += GRID) {
-        if (y % (GRID * 4) === 0) continue;
-        c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
+      /* Small tick marks at ring-spoke intersections on major spokes */
+      for (let k = 0; k < 4; k++) {
+        const angle = (k / 4) * Math.PI * 2;
+        ringRadii.slice(0, 4).forEach(r => {
+          const tx = pcx + Math.cos(angle) * r;
+          const ty = pcy + Math.sin(angle) * r;
+          c.fillStyle = "rgba(180,190,255,0.22)";
+          c.beginPath(); c.arc(tx, ty, 1.2, 0, Math.PI * 2); c.fill();
+        });
       }
 
-      /* ── Lissajous figures ──────────────────────────────────── */
+      /* ── Lissajous figures — clearly visible mathematical curves ── */
+      /* x = A·sin(a·θ + δ),  y = B·sin(b·θ),  δ drifts with time  */
+      const figures = [
+        /* Primary — 3:2, large, prominent */
+        { cx: pcx, cy: pcy, rx: H * 0.165, ry: H * 0.395, a: 3, b: 2, rate: 0.13, alpha: 0.18, width: 0.85 },
+        /* Secondary — 5:4, medium */
+        { cx: pcx, cy: pcy, rx: H * 0.105, ry: H * 0.250, a: 5, b: 4, rate: 0.08, alpha: 0.11, width: 0.70 },
+        /* Tertiary — 2:3, offset slightly */
+        { cx: W * 0.87, cy: pcy, rx: H * 0.075, ry: H * 0.175, a: 2, b: 3, rate: 0.20, alpha: 0.13, width: 0.65 },
+      ];
+
       const STEPS = 900;
-      for (const fig of FIGURES) {
-        const cx   = fig.cx * W;
-        const cy   = fig.cy * H;
-        const rx   = fig.rx * H;
-        const ry   = fig.ry * H;
+      for (const fig of figures) {
         const phase = t * fig.rate;
-
-        c.strokeStyle = `rgba(220,225,255,${fig.alpha})`;
-        c.lineWidth = 0.7;
+        c.strokeStyle = `rgba(200,210,255,${fig.alpha})`;
+        c.lineWidth = fig.width;
         c.beginPath();
         for (let i = 0; i <= STEPS; i++) {
           const θ = (i / STEPS) * Math.PI * 2;
-          const px = cx + rx * Math.sin(fig.a * θ + phase);
-          const py = cy + ry * Math.sin(fig.b * θ);
+          const px = fig.cx + fig.rx * Math.sin(fig.a * θ + phase);
+          const py = fig.cy + fig.ry * Math.sin(fig.b * θ);
           i === 0 ? c.moveTo(px, py) : c.lineTo(px, py);
         }
         c.closePath();
@@ -137,7 +143,7 @@ export default function ApplyCanvas() {
       }
 
       /* ── Equilibrium reference axis — dashed ────────────────── */
-      c.strokeStyle = "rgba(168,0,36,0.20)";
+      c.strokeStyle = "rgba(168,0,36,0.22)";
       c.lineWidth = 0.75;
       c.setLineDash([4, 10]);
       c.beginPath();
@@ -150,8 +156,8 @@ export default function ApplyCanvas() {
       {
         const haze = c.createLinearGradient(nodes[0].x, 0, nodes[nodes.length-1].x, 0);
         haze.addColorStop(0,   "rgba(168,0,36,0)");
-        haze.addColorStop(0.3, "rgba(168,0,36,0.065)");
-        haze.addColorStop(0.7, "rgba(168,0,36,0.065)");
+        haze.addColorStop(0.3, "rgba(168,0,36,0.07)");
+        haze.addColorStop(0.7, "rgba(168,0,36,0.07)");
         haze.addColorStop(1,   "rgba(168,0,36,0)");
         c.strokeStyle = haze;
         c.lineWidth = 16;
@@ -165,8 +171,8 @@ export default function ApplyCanvas() {
         c.stroke();
       }
 
-      /* ── Pipeline spine — crisp backbone ────────────────────── */
-      c.strokeStyle = "rgba(168,0,36,0.22)";
+      /* ── Pipeline spine — crisp line ────────────────────────── */
+      c.strokeStyle = "rgba(168,0,36,0.24)";
       c.lineWidth = 1;
       c.lineCap = "butt";
       c.beginPath();
@@ -181,7 +187,7 @@ export default function ApplyCanvas() {
       EDGES.forEach(([fi, ti]) => {
         const a = nodes[fi], b = nodes[ti], cp = cps[fi];
         const g = c.createLinearGradient(a.x, a.y, b.x, b.y);
-        g.addColorStop(0, "rgba(220,0,48,0.60)");
+        g.addColorStop(0, "rgba(220,0,48,0.62)");
         g.addColorStop(1, "rgba(220,0,48,0.05)");
         c.strokeStyle = g;
         c.lineWidth = 1.2;
