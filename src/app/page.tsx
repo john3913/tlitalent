@@ -98,28 +98,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STEPS — cold blue-midnight, distinct from hero's warm dark ═ */}
+      {/* ═══ STEPS — light ══════════════════════════════════════════ */}
       <section style={{
         position: "relative", overflow: "hidden",
-        background: "#06102c",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: "#f4f5fa",
+        borderBottom: "1px solid rgba(0,0,0,0.08)",
       }}>
-        {/* 2px maroon accent bar — unmistakable hard section break */}
+        {/* 2px maroon accent bar */}
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0, height: "2px",
           background: "linear-gradient(to right, transparent 4%, rgba(168,0,36,0.75) 22%, rgba(220,80,110,0.88) 50%, rgba(168,0,36,0.75) 78%, transparent 96%)",
         }}/>
-        {/* Dot grid — structural texture vs hero's flowing canvas */}
+        {/* Dot grid */}
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.022) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(rgba(0,0,0,0.055) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           pointerEvents: "none",
         }}/>
-        {/* Ambient glow — wider, stronger */}
+        {/* Ambient glow */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "75%",
-          background: "radial-gradient(ellipse 110% 160% at 50% -25%, rgba(168,0,36,0.24) 0%, rgba(60,10,60,0.06) 60%, transparent 100%)",
+          position: "absolute", top: 0, left: 0, right: 0, height: "65%",
+          background: "radial-gradient(ellipse 110% 140% at 50% -20%, rgba(168,0,36,0.07) 0%, transparent 70%)",
           pointerEvents: "none",
         }}/>
 
@@ -129,19 +129,19 @@ export default function Home() {
           <div style={{
             display: "flex", justifyContent: "space-between", alignItems: "center",
             gap: "3rem", padding: "5.5rem 0 4rem",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            borderBottom: "1px solid rgba(0,0,0,0.08)",
           }}>
             <div>
               <p style={{
                 fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
                 letterSpacing: "0.14em", textTransform: "uppercase",
-                color: "#40405a", marginBottom: "0.85rem",
+                color: L.textMuted, marginBottom: "0.85rem",
               }}>
                 How it works
               </p>
               <h2 style={{
                 fontSize: "clamp(2.2rem, 3.5vw, 3rem)", fontWeight: 600,
-                letterSpacing: "-0.04em", color: "#ffffff",
+                letterSpacing: "-0.04em", color: L.text,
                 lineHeight: 1.1, margin: 0,
               }}>
                 From interest<br />to first day.
@@ -153,18 +153,16 @@ export default function Home() {
               {steps.map((s, i) => (
                 <div key={s.n} style={{ display: "flex", alignItems: "center" }}>
                   <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: 56, height: 56 }}>
-                    {/* Outer ring */}
                     <div style={{
                       position: "absolute", inset: 0, borderRadius: "50%",
-                      border: "1px solid rgba(168,0,36,0.2)",
+                      border: "1px solid rgba(168,0,36,0.18)",
                     }}/>
-                    {/* Node */}
                     <div style={{
                       width: 38, height: 38, borderRadius: "50%",
-                      background: "linear-gradient(135deg, rgba(192,0,46,0.18) 0%, rgba(100,0,24,0.1) 100%)",
-                      border: "1px solid rgba(192,0,46,0.5)",
+                      background: "linear-gradient(135deg, rgba(192,0,46,0.1) 0%, rgba(100,0,24,0.06) 100%)",
+                      border: "1px solid rgba(192,0,46,0.38)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      boxShadow: "0 0 16px rgba(192,0,46,0.2), inset 0 1px 0 rgba(255,255,255,0.06)",
+                      boxShadow: "0 0 14px rgba(192,0,46,0.12)",
                     }}>
                       <span style={{
                         ...mG, fontFamily: "ui-monospace,monospace",
@@ -177,7 +175,7 @@ export default function Home() {
                   {i < steps.length - 1 && (
                     <div style={{
                       width: 28, height: 1, flexShrink: 0,
-                      background: "linear-gradient(to right, rgba(168,0,36,0.45), rgba(168,0,36,0.12))",
+                      background: "linear-gradient(to right, rgba(168,0,36,0.35), rgba(168,0,36,0.08))",
                     }}/>
                   )}
                 </div>
@@ -185,7 +183,7 @@ export default function Home() {
             </div>
 
             <div style={{ display: "flex", justifyContent: "flex-end", flexShrink: 0 }}>
-              <Link href="/process" className="btn-outline" style={{ fontSize: "13px", padding: "9px 22px" }}>
+              <Link href="/process" className="btn-light" style={{ fontSize: "13px", padding: "9px 22px" }}>
                 Full process guide →
               </Link>
             </div>
@@ -197,21 +195,21 @@ export default function Home() {
               <Link key={s.n} href="/process" style={{
                 display: "block", textDecoration: "none",
                 padding: "3.5rem",
-                borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                borderRight: i % 2 === 0 ? "1px solid rgba(0,0,0,0.07)" : "none",
+                borderBottom: i < 4 ? "1px solid rgba(0,0,0,0.07)" : "none",
                 position: "relative", overflow: "hidden",
-                background: "rgba(255,255,255,0.028)",
+                background: "rgba(255,255,255,0.6)",
                 transition: "background 0.2s",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.08)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.028)")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.92)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.6)")}
               >
                 {/* Ghost watermark */}
                 <div style={{
                   position: "absolute", top: "-1rem", right: "1rem",
                   fontSize: "8rem", fontWeight: 800,
                   fontFamily: "ui-monospace,monospace",
-                  color: "rgba(168,0,36,0.08)", lineHeight: 1,
+                  color: "rgba(168,0,36,0.06)", lineHeight: 1,
                   pointerEvents: "none", userSelect: "none",
                   letterSpacing: "-0.06em",
                 }}>
@@ -233,9 +231,9 @@ export default function Home() {
                   <span style={{
                     fontFamily: "ui-monospace,monospace",
                     fontSize: "0.58rem", letterSpacing: "0.08em", textTransform: "uppercase",
-                    color: "#8888a8",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.09)",
+                    color: L.textMuted,
+                    background: "rgba(0,0,0,0.045)",
+                    border: "1px solid rgba(0,0,0,0.09)",
                     padding: "3px 12px", borderRadius: "20px",
                   }}>
                     {s.who}
@@ -244,14 +242,14 @@ export default function Home() {
 
                 <h3 style={{
                   fontSize: "1.1rem", fontWeight: 600,
-                  color: "#e8e8f4", letterSpacing: "-0.022em",
+                  color: L.text, letterSpacing: "-0.022em",
                   lineHeight: 1.32, marginBottom: "0.9rem",
                 }}>
                   {s.title}
                 </h3>
 
                 <p style={{
-                  fontSize: "0.84rem", color: "#7878a0",
+                  fontSize: "0.84rem", color: L.textSub,
                   lineHeight: 1.82, margin: 0,
                 }}>
                   {s.body}
