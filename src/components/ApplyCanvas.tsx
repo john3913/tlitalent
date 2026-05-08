@@ -45,7 +45,7 @@ export default function ApplyCanvas(){
       bgParticles=bgEdges
         .filter(()=>Math.random()<0.60)
         .map((_,i)=>({ei:i,t:Math.random(),
-          speed:0.00018+Math.random()*0.00032,
+          speed:0.00023+Math.random()*0.00042,
           dir:(Math.random()<0.5?1:-1) as 1|-1}));
     }
 
@@ -62,7 +62,7 @@ export default function ApplyCanvas(){
 
     function draw(){
       /* Slow fade — trails accumulate, like the hero canvas */
-      c.fillStyle="rgba(4,5,14,0.13)";
+      c.fillStyle="rgba(4,5,14,0.17)";
       c.fillRect(0,0,W,H);
 
       /* ── Background edges ────────────────────────────────────── */
