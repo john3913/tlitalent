@@ -8,7 +8,7 @@ interface BgNode{x:number;y:number}
 interface BgEdge{a:number;b:number;len:number}
 interface BgParticle{ei:number;t:number;speed:number;dir:1|-1}
 
-const N_NODES = 112;
+const N_NODES = 72;
 
 export default function ApplyCanvas(){
   const ref=useRef<HTMLCanvasElement>(null);
@@ -65,9 +65,9 @@ export default function ApplyCanvas(){
       c.fillStyle="rgba(4,5,14,0.13)";
       c.fillRect(0,0,W,H);
 
-      /* ── Background edges — VISIBLE cold blue ────────────────── */
-      c.lineWidth=0.8;
-      c.strokeStyle="rgba(90,120,175,0.18)";
+      /* ── Background edges ────────────────────────────────────── */
+      c.lineWidth=0.6;
+      c.strokeStyle="rgba(90,120,175,0.09)";
       for(const e of bgEdges){
         const a=bgNodes[e.a],b=bgNodes[e.b];
         c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();
@@ -75,24 +75,24 @@ export default function ApplyCanvas(){
 
       /* ── Background nodes ────────────────────────────────────── */
       for(const n of bgNodes){
-        c.fillStyle="rgba(140,170,215,0.48)";
-        c.beginPath();c.arc(n.x,n.y,2.0,0,Math.PI*2);c.fill();
+        c.fillStyle="rgba(140,170,215,0.26)";
+        c.beginPath();c.arc(n.x,n.y,1.2,0,Math.PI*2);c.fill();
       }
 
-      /* ── Background particles — bright cold-white streaks ─────── */
+      /* ── Background particles ────────────────────────────────── */
       for(const p of bgParticles){
         const e=bgEdges[p.ei];
         const a=bgNodes[e.a],b=bgNodes[e.b];
         const px=a.x+(b.x-a.x)*p.t,py=a.y+(b.y-a.y)*p.t;
 
         /* Bloom */
-        const glow=c.createRadialGradient(px,py,0,px,py,7);
-        glow.addColorStop(0,"rgba(160,195,240,0.36)");
+        const glow=c.createRadialGradient(px,py,0,px,py,4);
+        glow.addColorStop(0,"rgba(160,195,240,0.18)");
         glow.addColorStop(1,"rgba(160,195,240,0)");
-        c.fillStyle=glow;c.beginPath();c.arc(px,py,7,0,Math.PI*2);c.fill();
+        c.fillStyle=glow;c.beginPath();c.arc(px,py,4,0,Math.PI*2);c.fill();
         /* Core */
-        c.fillStyle="rgba(210,228,252,0.90)";
-        c.beginPath();c.arc(px,py,1.5,0,Math.PI*2);c.fill();
+        c.fillStyle="rgba(210,228,252,0.62)";
+        c.beginPath();c.arc(px,py,1.0,0,Math.PI*2);c.fill();
 
         p.t+=p.speed*p.dir;
         if(p.t>1){p.t=1;p.dir=-1;}
