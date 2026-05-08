@@ -293,11 +293,11 @@ export default function Home() {
               <div style={{
                 fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
                 letterSpacing: "0.11em", textTransform: "uppercase",
-                color: "rgba(255,255,255,0.38)", marginBottom: "4px",
+                color: "rgba(255,255,255,0.62)", marginBottom: "4px",
               }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: "0.71rem", color: "rgba(255,255,255,0.22)" }}>{s.sub}</div>
+              <div style={{ fontSize: "0.71rem", color: "rgba(255,255,255,0.42)" }}>{s.sub}</div>
             </div>
           ))}
         </div>
