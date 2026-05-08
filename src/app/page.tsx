@@ -262,12 +262,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STATS — light with maroon constellation canvas ════════ */}
+      {/* ═══ STATS — deep navy, science/research aesthetic ══════════ */}
       <section style={{
         position: "relative", overflow: "hidden",
-        background: "#ffffff",
-        borderTop: "1px solid rgba(0,0,0,0.07)",
-        borderBottom: "1px solid rgba(0,0,0,0.07)",
+        background: "#07101f",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
         <StatsCanvas />
         <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", position: "relative", zIndex: 1 }}>
@@ -279,7 +279,7 @@ export default function Home() {
           ].map((s, i) => (
             <div key={s.label} style={{
               padding: "2.75rem 2rem",
-              borderRight: i < 3 ? `1px solid ${L.border}` : "none",
+              borderRight: i < 3 ? "1px solid rgba(255,255,255,0.07)" : "none",
               position: "relative",
             }}>
               <div style={{
@@ -293,11 +293,11 @@ export default function Home() {
               <div style={{
                 fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
                 letterSpacing: "0.11em", textTransform: "uppercase",
-                color: L.textMuted, marginBottom: "4px",
+                color: "rgba(255,255,255,0.38)", marginBottom: "4px",
               }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: "0.71rem", color: L.textSub }}>{s.sub}</div>
+              <div style={{ fontSize: "0.71rem", color: "rgba(255,255,255,0.22)" }}>{s.sub}</div>
             </div>
           ))}
         </div>

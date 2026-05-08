@@ -2,10 +2,11 @@
 import { useEffect, useRef } from "react";
 
 interface Node { x: number; y: number }
-interface Edge { a: number; b: number; len: number }
+interface Edge { a: number; b: number }
 interface Particle { ei: number; t: number; speed: number; dir: 1 | -1 }
 
-const N = 28;
+const N = 36;
+const BG = "rgba(7,16,31,0.14)";
 
 export default function StatsCanvas() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -25,21 +26,22 @@ export default function StatsCanvas() {
         x: Math.random() * W,
         y: Math.random() * H,
       }));
-      const cutoff = W * 0.22;
+      const cutoff = W * 0.20;
       edges = [];
       for (let i = 0; i < nodes.length; i++) {
         let conns = 0;
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < cutoff && conns < 3) { edges.push({ a: i, b: j, len: d }); conns++; }
+          if (Math.sqrt(dx * dx + dy * dy) < cutoff && conns < 3) {
+            edges.push({ a: i, b: j }); conns++;
+          }
         }
       }
       particles = edges
-        .filter(() => Math.random() < 0.55)
+        .filter(() => Math.random() < 0.60)
         .map((_, i) => ({
           ei: i, t: Math.random(),
-          speed: 0.00018 + Math.random() * 0.00038,
+          speed: 0.00020 + Math.random() * 0.00035,
           dir: (Math.random() < 0.5 ? 1 : -1) as 1 | -1,
         }));
     }
@@ -55,11 +57,19 @@ export default function StatsCanvas() {
     let raf = 0;
 
     function draw() {
-      c.clearRect(0, 0, W, H);
+      /* fade trail — dark navy base */
+      c.fillStyle = BG;
+      c.fillRect(0, 0, W, H);
+
+      /* fine grid — technical instrument texture */
+      c.lineWidth = 0.35;
+      c.strokeStyle = "rgba(120,160,220,0.055)";
+      for (let x = 40; x < W; x += 40) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, H); c.stroke(); }
+      for (let y = 40; y < H; y += 40) { c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke(); }
 
       /* edges */
-      c.lineWidth = 0.5;
-      c.strokeStyle = "rgba(168,0,36,0.07)";
+      c.lineWidth = 0.55;
+      c.strokeStyle = "rgba(100,140,200,0.10)";
       for (const e of edges) {
         const a = nodes[e.a], b = nodes[e.b];
         c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
@@ -67,8 +77,8 @@ export default function StatsCanvas() {
 
       /* nodes */
       for (const n of nodes) {
-        c.fillStyle = "rgba(168,0,36,0.13)";
-        c.beginPath(); c.arc(n.x, n.y, 1.4, 0, Math.PI * 2); c.fill();
+        c.fillStyle = "rgba(140,175,225,0.28)";
+        c.beginPath(); c.arc(n.x, n.y, 1.3, 0, Math.PI * 2); c.fill();
       }
 
       /* particles */
@@ -77,13 +87,13 @@ export default function StatsCanvas() {
         const a = nodes[e.a], b = nodes[e.b];
         const px = a.x + (b.x - a.x) * p.t, py = a.y + (b.y - a.y) * p.t;
 
-        const glow = c.createRadialGradient(px, py, 0, px, py, 5);
-        glow.addColorStop(0, "rgba(168,0,36,0.12)");
-        glow.addColorStop(1, "rgba(168,0,36,0)");
-        c.fillStyle = glow; c.beginPath(); c.arc(px, py, 5, 0, Math.PI * 2); c.fill();
+        const glow = c.createRadialGradient(px, py, 0, px, py, 4.5);
+        glow.addColorStop(0, "rgba(160,200,248,0.20)");
+        glow.addColorStop(1, "rgba(160,200,248,0)");
+        c.fillStyle = glow; c.beginPath(); c.arc(px, py, 4.5, 0, Math.PI * 2); c.fill();
 
-        c.fillStyle = "rgba(168,0,36,0.52)";
-        c.beginPath(); c.arc(px, py, 1.1, 0, Math.PI * 2); c.fill();
+        c.fillStyle = "rgba(215,232,255,0.68)";
+        c.beginPath(); c.arc(px, py, 1.0, 0, Math.PI * 2); c.fill();
 
         p.t += p.speed * p.dir;
         if (p.t > 1) { p.t = 1; p.dir = -1; }
@@ -93,6 +103,7 @@ export default function StatsCanvas() {
       raf = requestAnimationFrame(draw);
     }
 
+    c.fillStyle = "#07101f"; c.fillRect(0, 0, W, H);
     raf = requestAnimationFrame(draw);
     const ro = new ResizeObserver(resize); ro.observe(el);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
