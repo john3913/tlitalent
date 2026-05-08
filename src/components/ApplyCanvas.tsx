@@ -79,9 +79,58 @@ export default function ApplyCanvas() {
       last=now;
       c.clearRect(0,0,W,H);
 
+      /* ── Polar coordinate grid — centered on pipeline midpoint ─── */
+      const pcx=W*0.735, pcy=H*0.5;
+      /* Concentric rings */
+      [0.10,0.19,0.30,0.42,0.55,0.68].forEach((f,i)=>{
+        const r=f*H;
+        const a=i<2?0.060:i<4?0.042:0.026;
+        c.strokeStyle=`rgba(170,180,255,${a})`;
+        c.lineWidth=0.6;
+        c.beginPath(); c.arc(pcx,pcy,r,0,Math.PI*2); c.stroke();
+      });
+      /* Radial spokes — 16 */
+      for(let k=0;k<16;k++){
+        const angle=(k/16)*Math.PI*2;
+        const a=k%4===0?0.052:0.022;
+        c.strokeStyle=`rgba(170,180,255,${a})`;
+        c.lineWidth=0.5;
+        c.beginPath(); c.moveTo(pcx,pcy);
+        c.lineTo(pcx+Math.cos(angle)*H*0.68, pcy+Math.sin(angle)*H*0.68);
+        c.stroke();
+      }
+      /* Tick dots at major-spoke × ring intersections */
+      for(let k=0;k<4;k++){
+        const angle=(k/4)*Math.PI*2;
+        [0.10,0.19,0.30,0.42].forEach(f=>{
+          const r=f*H;
+          c.fillStyle="rgba(170,180,255,0.28)";
+          c.beginPath();
+          c.arc(pcx+Math.cos(angle)*r, pcy+Math.sin(angle)*r, 1.4, 0, Math.PI*2);
+          c.fill();
+        });
+      }
+
+      /* ── Lissajous figure — 3:2, slowly morphing ─────────────── */
+      {
+        const t=(performance.now()-0)*0.001;
+        const phase=t*0.13;
+        const rx=H*0.155, ry=H*0.370;
+        c.strokeStyle="rgba(200,210,255,0.17)";
+        c.lineWidth=0.80;
+        c.beginPath();
+        for(let i=0;i<=900;i++){
+          const θ=(i/900)*Math.PI*2;
+          const px=pcx+rx*Math.sin(3*θ+phase);
+          const py=pcy+ry*Math.sin(2*θ);
+          i===0?c.moveTo(px,py):c.lineTo(px,py);
+        }
+        c.closePath(); c.stroke();
+      }
+
       /* ── Fine hairline grid ───────────────────────────────────── */
       c.lineWidth=0.5;
-      c.strokeStyle="rgba(255,255,255,0.016)";
+      c.strokeStyle="rgba(255,255,255,0.014)";
       for(let x=44;x<W;x+=44){c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();}
       for(let y=44;y<H;y+=44){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke();}
 
