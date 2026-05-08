@@ -158,8 +158,8 @@ export default function Apply() {
       {/* ── Header — dark with pipeline canvas ─────────────────── */}
       <section style={{
         position: "relative", overflow: "hidden",
-        background: "#06091e",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        background: "linear-gradient(160deg, #10122e 0%, #0c0e26 40%, #09091e 100%)",
+        borderBottom: "1px solid rgba(255,255,255,0.09)",
         padding: "7rem 0 6rem",
       }}>
         <ApplyCanvas />
