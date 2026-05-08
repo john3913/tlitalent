@@ -8,7 +8,7 @@ interface BgNode{x:number;y:number}
 interface BgEdge{a:number;b:number;len:number}
 interface BgParticle{ei:number;t:number;speed:number;dir:1|-1}
 
-const N_NODES = 110;
+const N_NODES = 112;
 
 export default function ApplyCanvas(){
   const ref=useRef<HTMLCanvasElement>(null);
