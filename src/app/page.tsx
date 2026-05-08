@@ -270,16 +270,15 @@ export default function Home() {
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
         <StatsCanvas />
-        <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", position: "relative", zIndex: 1 }}>
+        <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", position: "relative", zIndex: 1 }}>
           {[
-            { n: "4",        label: "Research Programs",     sub: "IFP · MedWorX · Anatomy U · CLIP" },
             { n: "~$1,000",  label: "Est. Semester Stipend", sub: "Scholarship to student account"    },
             { n: "<14 hrs",  label: "Weekly Commitment",     sub: "5–14 hrs depending on project"     },
             { n: "3",        label: "Eligible Programs",     sub: "MDI · ST · MOT priority"           },
           ].map((s, i) => (
             <div key={s.label} style={{
               padding: "2.75rem 2rem",
-              borderRight: i < 3 ? "1px solid rgba(255,255,255,0.07)" : "none",
+              borderRight: i < 2 ? "1px solid rgba(255,255,255,0.07)" : "none",
               position: "relative",
             }}>
               <div style={{
