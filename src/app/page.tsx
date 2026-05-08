@@ -98,28 +98,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STEPS — cold blue-midnight, distinct from hero's warm dark ═ */}
+      {/* ═══ STEPS — deep navy, clearly differentiated from hero ═══ */}
       <section style={{
         position: "relative", overflow: "hidden",
-        background: "#06102c",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: "#07091e",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
-        {/* 2px maroon accent bar — unmistakable hard section break */}
+        {/* Maroon accent bar — hard break from hero's warm dark */}
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "2px",
-          background: "linear-gradient(to right, transparent 4%, rgba(168,0,36,0.75) 22%, rgba(220,80,110,0.88) 50%, rgba(168,0,36,0.75) 78%, transparent 96%)",
+          position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+          background: "linear-gradient(to right, transparent 5%, rgba(168,0,36,0.55) 25%, rgba(220,80,110,0.7) 50%, rgba(168,0,36,0.55) 75%, transparent 95%)",
         }}/>
-        {/* Dot grid — structural texture vs hero's flowing canvas */}
+        {/* Dot grid — gives this section distinct material quality vs hero canvas */}
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.022) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           pointerEvents: "none",
         }}/>
-        {/* Ambient glow — wider, stronger */}
+        {/* Ambient glow — stronger, wider spread */}
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0, height: "75%",
-          background: "radial-gradient(ellipse 110% 160% at 50% -25%, rgba(168,0,36,0.24) 0%, rgba(60,10,60,0.06) 60%, transparent 100%)",
+          background: "radial-gradient(ellipse 100% 150% at 50% -20%, rgba(168,0,36,0.22) 0%, rgba(80,0,30,0.06) 60%, transparent 100%)",
           pointerEvents: "none",
         }}/>
 
@@ -200,11 +200,11 @@ export default function Home() {
                 borderRight: i % 2 === 0 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none",
                 position: "relative", overflow: "hidden",
-                background: "rgba(255,255,255,0.028)",
+                background: "rgba(255,255,255,0.015)",
                 transition: "background 0.2s",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.08)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.028)")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(168,0,36,0.07)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.015)")}
               >
                 {/* Ghost watermark */}
                 <div style={{
@@ -263,11 +263,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STATS — pure dark for maximum editorial contrast ════ */}
+      {/* ═══ STATS ═══════════════════════════════════════════════ */}
       <section style={{
-        background: "#060608",
-        borderTop: "1px solid rgba(255,255,255,0.07)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: L.white,
+        borderTop: `1px solid ${L.border}`,
+        borderBottom: `1px solid ${L.border}`,
       }}>
         <div style={{ ...W, display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
           {[
@@ -277,73 +277,69 @@ export default function Home() {
             { n: "3",        label: "Eligible Programs",     sub: "MDI · ST · MOT priority"           },
           ].map((s, i) => (
             <div key={s.label} style={{
-              padding: "2.75rem 2rem",
-              borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none",
+              padding: "2.25rem 2rem",
+              borderRight: i < 3 ? `1px solid ${L.border}` : "none",
               position: "relative",
             }}>
               <div style={{
                 position: "absolute", top: 0, left: "2rem",
-                width: "44px", height: "2px",
-                background: "linear-gradient(to right, rgba(168,0,36,0.75), transparent)",
+                width: "40px", height: "2px",
+                background: "linear-gradient(to right, rgba(168,0,36,0.6), transparent)",
               }}/>
-              <div style={{ ...mG, fontSize: "2.6rem", fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, marginBottom: "8px" }}>
+              <div style={{ ...mG, fontSize: "2rem", fontWeight: 600, letterSpacing: "-0.04em", marginBottom: "5px" }}>
                 {s.n}
               </div>
               <div style={{
-                fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
-                letterSpacing: "0.11em", textTransform: "uppercase",
-                color: "#505062", marginBottom: "4px",
+                fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
+                letterSpacing: "0.1em", textTransform: "uppercase",
+                color: L.textMuted, marginBottom: "3px",
               }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: "0.71rem", color: "#38383e" }}>{s.sub}</div>
+              <div style={{ fontSize: "0.72rem", color: L.textMuted }}>{s.sub}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ═══ VISA NOTICE — pure white, hard contrast break from dark ═ */}
-      <section style={{ background: "#ffffff", padding: "8rem 0 10rem" }}>
+      {/* ═══ VISA NOTICE ═════════════════════════════════════════ */}
+      <section style={{ background: L.bg, padding: "6rem 0 8rem", borderTop: `1px solid ${L.border}` }}>
         <div style={W}>
-          {/* Section label */}
           <div style={{
-            display: "flex", alignItems: "center", gap: "1rem",
-            marginBottom: "3.5rem",
-          }}>
-            <div style={{ width: 28, height: "1px", background: L.maroon }}/>
-            <p style={{
-              fontFamily: "ui-monospace,monospace", fontSize: "0.62rem",
-              letterSpacing: "0.14em", textTransform: "uppercase",
-              color: L.maroon, margin: 0,
-            }}>
-              Visa Eligibility
-            </p>
-          </div>
-
-          <div style={{
+            borderRadius: 14,
+            background: L.white,
+            border: "1px solid rgba(168,0,36,0.15)",
+            borderLeft: "3px solid rgba(168,0,36,0.5)",
+            boxShadow: "0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)",
             display: "grid", gridTemplateColumns: "1fr 1fr",
-            gap: "6rem", alignItems: "start",
+            gap: "5rem", alignItems: "center",
+            padding: "3.5rem 4rem",
           }}>
-            {/* Left — editorial text */}
             <div>
-              <h3 style={{
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 600,
-                color: L.text, letterSpacing: "-0.03em", lineHeight: 1.15,
-                marginBottom: "1.4rem",
+              <p style={{
+                fontFamily: "ui-monospace,monospace", fontSize: "0.63rem",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                color: L.maroon, marginBottom: "0.75rem",
               }}>
-                International student<br />visa notice.
+                Important
+              </p>
+              <h3 style={{
+                fontSize: "clamp(1.4rem, 2.5vw, 1.7rem)", fontWeight: 600,
+                color: L.text, letterSpacing: "-0.025em", lineHeight: 1.2,
+                marginBottom: "1.1rem",
+              }}>
+                International Student<br />Visa Notice
               </h3>
-              <p style={{ fontSize: "0.9rem", color: L.textSub, lineHeight: 1.88, marginBottom: "1.8rem" }}>
+              <p style={{ fontSize: "0.875rem", color: L.textSub, lineHeight: 1.85, marginBottom: "1.4rem" }}>
                 Students on certain temporary visas may only volunteer where others do not receive
                 compensation for the same services.{" "}
                 <strong style={{ color: L.text, fontWeight: 500 }}>
                   Students with a pending H-1B application at UMN cannot serve as volunteers.
                 </strong>{" "}
-                J-1 professors, research scholars, and short-term scholars are permitted to participate.
+                J-1 professors, research scholars, and short-term scholars are permitted.
               </p>
               <Link href="/resources#visa" style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                fontSize: "0.84rem", color: L.maroon,
+                fontSize: "0.83rem", color: L.maroon,
                 textDecoration: "underline", textUnderlineOffset: "4px",
                 fontWeight: 500,
               }}>
@@ -351,48 +347,23 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Right — data table */}
-            <div style={{
-              border: `1px solid ${L.border}`,
-              borderRadius: 12, overflow: "hidden",
-              boxShadow: "0 2px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03)",
-            }}>
-              {/* Table header */}
-              <div style={{
-                display: "flex", justifyContent: "space-between",
-                padding: "12px 20px",
-                background: "#f8f8fa",
-                borderBottom: `1px solid ${L.border}`,
-              }}>
-                <span style={{
-                  fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",
-                  letterSpacing: "0.11em", textTransform: "uppercase", color: L.textMuted,
-                }}>Visa Type</span>
-                <span style={{
-                  fontFamily: "ui-monospace,monospace", fontSize: "0.59rem",
-                  letterSpacing: "0.11em", textTransform: "uppercase", color: L.textMuted,
-                }}>Status</span>
-              </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               {[
-                { label: "F-1 Student Visa",         status: "Eligible",      ok: true  },
-                { label: "J-1 Research Scholar",     status: "Eligible",      ok: true  },
-                { label: "J-1 Professor",            status: "Eligible",      ok: true  },
-                { label: "J-1 Short-Term Scholar",   status: "Eligible",      ok: true  },
-                { label: "Pending H-1B at UMN",      status: "Not eligible",  ok: false },
-              ].map((r, i) => (
+                { label: "F-1 Student Visa",         status: "Eligible",                 ok: true  },
+                { label: "J-1 Research Scholar",     status: "Eligible",                 ok: true  },
+                { label: "J-1 Professor",            status: "Eligible",                 ok: true  },
+                { label: "J-1 Short-Term Scholar",   status: "Eligible",                 ok: true  },
+                { label: "Pending H-1B at UMN",      status: "Not eligible as volunteer", ok: false },
+              ].map(r => (
                 <div key={r.label} style={{
                   display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "0.9rem 1.25rem",
-                  borderBottom: i < 4 ? `1px solid ${L.borderSubtle}` : "none",
-                  background: r.ok ? "transparent" : "rgba(168,0,36,0.025)",
+                  padding: "0.8rem 1.1rem",
+                  background: L.white,
+                  borderRadius: 8,
+                  border: `1px solid ${r.ok ? L.borderSubtle : "rgba(168,0,36,0.15)"}`,
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
                 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{
-                      width: 5, height: 5, borderRadius: "50%",
-                      background: r.ok ? "#2e7d3e" : L.maroon, flexShrink: 0,
-                    }}/>
-                    <span style={{ fontSize: "0.85rem", color: L.textSub }}>{r.label}</span>
-                  </div>
+                  <span style={{ fontSize: "0.84rem", color: L.textSub }}>{r.label}</span>
                   <span style={{
                     fontFamily: "ui-monospace,monospace", fontSize: "0.6rem",
                     letterSpacing: "0.08em", textTransform: "uppercase",
